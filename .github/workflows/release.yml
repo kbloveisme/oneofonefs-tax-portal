@@ -25,6 +25,8 @@ jobs:
 
       - name: Bump patch version and push tag
         id: tag
+        # Security: replace @v6.2 with the full commit SHA of that release before using in production.
+        # Find the SHA at: https://github.com/mathieudutour/github-tag-action/releases/tag/v6.2
         uses: mathieudutour/github-tag-action@v6.2
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

@@ -10,6 +10,8 @@ jobs:
   html-lint:
     name: Lint HTML
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository
@@ -29,6 +31,8 @@ jobs:
   link-check:
     name: Check external links
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout repository

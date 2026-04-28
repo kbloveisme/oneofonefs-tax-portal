@@ -1,0 +1,82 @@
+name: Issue Tracker – Auto-label & Assign
+
+on:
+  issues:
+    types: [opened, reopened]
+
+permissions:
+  issues: write
+
+jobs:
+  triage:
+    name: Auto-triage new issues
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Auto-label based on title keywords
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const title = (issue.title || "").toLowerCase();
+            const body  = (issue.body  || "").toLowerCase();
+            const text  = title + " " + body;
+
+            const labelMap = {
+              bug:         ["bug", "error", "broken", "crash", "fail", "issue", "not work"],
+              enhancement: ["feature", "request", "improve", "add", "enhance", "suggest"],
+              ui:          ["ui", "style", "css", "layout", "design", "visual", "button"],
+              booking:     ["booking", "appointment", "calendar", "schedule"],
+              upload:      ["upload", "document", "file", "w-2", "1099"],
+              mobile:      ["mobile", "phone", "responsive", "tablet"],
+              ci:          ["ci", "workflow", "action", "pipeline", "deploy"],
+            };
+
+            const labelsToAdd = [];
+            for (const [label, keywords] of Object.entries(labelMap)) {
+              if (keywords.some(kw => text.includes(kw))) {
+                labelsToAdd.push(label);
+              }
+            }
+
+            // Always keep the needs-triage label until someone reviews it
+            if (!labelsToAdd.includes("needs-triage")) {
+              labelsToAdd.push("needs-triage");
+            }
+
+            if (labelsToAdd.length > 0) {
+              await github.rest.issues.addLabels({
+                owner: context.repo.owner,
+                repo:  context.repo.repo,
+                issue_number: issue.number,
+                labels: labelsToAdd,
+              });
+            }
+
+      - name: Assign issue to repo owner
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.addAssignees({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: context.payload.issue.number,
+              assignees: ["kbloveisme"],
+            });
+
+      - name: Post welcome comment
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issue = context.payload.issue;
+            const isFeature = (issue.title || "").toLowerCase().includes("feature");
+            const greeting = isFeature
+              ? "Thanks for the feature suggestion! We'll review it and prioritize accordingly."
+              : "Thanks for reporting this issue! We've auto-triaged and assigned it. We'll follow up soon.";
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo:  context.repo.repo,
+              issue_number: issue.number,
+              body: `👋 ${greeting}\n\n_This message was posted automatically by the issue-tracker workflow._`,
+            });

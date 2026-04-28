@@ -1,0 +1,63 @@
+name: Feature Request
+description: Suggest a new feature or improvement for the tax portal
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: ["kbloveisme"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to improve the portal? Tell us about it below.
+
+  - type: input
+    id: summary
+    attributes:
+      label: Feature Summary
+      description: A concise title for the feature.
+      placeholder: e.g. "Add SMS reminder opt-out link in confirmation text"
+    validations:
+      required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: What problem does this feature solve, or what opportunity does it address?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature as clearly as possible.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: List any alternative solutions or workarounds you have considered.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: checklist
+    attributes:
+      label: Pre-submission checklist
+      options:
+        - label: I searched existing issues and this is not a duplicate.
+          required: true

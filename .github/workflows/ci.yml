@@ -1,0 +1,48 @@
+name: CI – HTML Lint & Validate
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  html-lint:
+    name: Lint HTML
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install htmlhint
+        run: npm install -g htmlhint
+
+      - name: Lint index.html
+        run: htmlhint index.html --config .htmlhintrc || htmlhint index.html
+
+  link-check:
+    name: Check external links
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install lychee link checker
+        run: |
+          curl -sSfL https://github.com/lycheeverse/lychee/releases/latest/download/lychee-x86_64-unknown-linux-gnu.tar.gz | tar xz
+          sudo mv lychee /usr/local/bin/
+
+      - name: Check links in HTML files
+        run: lychee --no-progress --exclude "tel:" --exclude "mailto:" index.html || true

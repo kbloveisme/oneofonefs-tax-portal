@@ -1,0 +1,57 @@
+{
+  "version": "1.0",
+  "integration": "manus",
+  "repository": {
+    "owner": "kbloveisme",
+    "name": "oneofonefs-tax-portal",
+    "description": "Secure online tax portal for One Of One Financial Solutions",
+    "default_branch": "main",
+    "url": "https://github.com/kbloveisme/oneofonefs-tax-portal"
+  },
+  "access": {
+    "issues": true,
+    "pull_requests": true,
+    "workflows": true,
+    "releases": true,
+    "code_search": true
+  },
+  "workflows": {
+    "ci": {
+      "file": ".github/workflows/ci.yml",
+      "description": "Lints and validates HTML on every push and PR",
+      "triggers": ["push", "pull_request"]
+    },
+    "issue_tracker": {
+      "file": ".github/workflows/issue-tracker.yml",
+      "description": "Auto-labels and assigns newly opened issues",
+      "triggers": ["issues.opened", "issues.reopened"]
+    },
+    "pr_review": {
+      "file": ".github/workflows/pr-review.yml",
+      "description": "Auto-labels PRs, requests review, and validates PR body",
+      "triggers": ["pull_request.opened", "pull_request.synchronize", "pull_request.reopened"]
+    },
+    "release": {
+      "file": ".github/workflows/release.yml",
+      "description": "Tags a new release and deploys to GitHub Pages on merge to main",
+      "triggers": ["push.main"]
+    }
+  },
+  "labels": {
+    "config_file": ".github/labels.yml",
+    "triage_label": "needs-triage",
+    "review_label": "needs-review",
+    "categories": ["bug", "enhancement", "ui", "javascript", "ci", "booking", "upload", "mobile", "security", "documentation"]
+  },
+  "issue_templates": {
+    "bug_report": ".github/ISSUE_TEMPLATE/bug_report.yml",
+    "feature_request": ".github/ISSUE_TEMPLATE/feature_request.yml"
+  },
+  "pr_template": ".github/pull_request_template.md",
+  "codeowners": ".github/CODEOWNERS",
+  "default_assignee": "kbloveisme",
+  "search": {
+    "indexed_files": ["index.html", "styles.css", "script.js"],
+    "topic_keywords": ["tax", "portal", "booking", "upload", "financial", "one-of-one"]
+  }
+}

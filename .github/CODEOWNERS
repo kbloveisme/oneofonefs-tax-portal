@@ -1,0 +1,21 @@
+# CODEOWNERS for oneofonefs-tax-portal
+# Syntax: <path pattern>  <GitHub username(s)>
+# See: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
+
+# Default owner for everything not matched below
+*  @kbloveisme
+
+# HTML — portal markup
+*.html  @kbloveisme
+
+# CSS — styles
+*.css   @kbloveisme
+
+# JavaScript — client-side logic
+*.js    @kbloveisme
+
+# GitHub Actions workflows and configuration
+.github/  @kbloveisme
+
+# Manus integration config
+manus.config.json  @kbloveisme

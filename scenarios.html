@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dispatch Scenarios — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+      <div class="page-header">
+        <div class="page-title"><span class="pg-icon">🎭</span> Interactive Dispatch Scenarios</div>
+        <div class="page-subtitle">First-person officer POV · Decision-based training · Legal outcome analysis</div>
+      </div>
+
+      <!-- Scenario Select -->
+      <div id="scenario-select">
+        <div class="alert alert-info" style="margin-bottom:1.5rem">
+          <span>📡</span>
+          <div>Experience law enforcement scenarios through the officer's eyes. Each scenario presents a real-world situation, dispatch call, and critical decision points with legal analysis and citations.</div>
+        </div>
+        <div class="scenario-grid" id="scenario-grid"></div>
+      </div>
+
+      <!-- Active Scenario Viewer -->
+      <div id="scenario-viewer" class="hidden">
+        <!-- Dispatch Bar -->
+        <div class="dispatch-bar" id="dispatch-bar">
+          <div class="dispatch-light active" id="dispatch-light"></div>
+          <div class="dispatch-text" id="dispatch-text">🔊 DISPATCH: Loading…</div>
+          <div class="dispatch-time" id="dispatch-time"></div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 380px;gap:1.25rem;height:calc(100vh - 300px);min-height:500px">
+          <!-- Body Cam View -->
+          <div class="bodycam-view" id="bodycam-view">
+            <div class="bodycam-frame">
+              <div class="bodycam-hud">
+                <div class="hud-badge" id="hud-badge">UNIT 42 · HARRIS COUNTY</div>
+                <div style="display:flex;gap:.5rem">
+                  <div class="hud-status"><div class="rec-dot"></div>REC</div>
+                  <div class="hud-status" id="hud-time-display">23:14:07</div>
+                </div>
+              </div>
+              <div class="bodycam-scene">
+                <div id="scene-emoji" class="scene-visual" style="font-size:8rem">🚗</div>
+              </div>
+              <div class="scene-desc" id="scene-desc">Loading scenario…</div>
+            </div>
+          </div>
+
+          <!-- Right: Choices / Outcome -->
+          <div style="display:flex;flex-direction:column;gap:1rem;overflow-y:auto">
+            <div class="card" style="flex-shrink:0">
+              <div class="card-header">
+                <span id="step-indicator" class="badge badge-gold">Step 1 of 2</span>
+                <button onclick="exitScenario()" class="btn btn-sm btn-outline">✕ Exit</button>
+              </div>
+              <div id="question-text" style="font-size:.95rem;font-weight:500;line-height:1.6;color:var(--text-primary);margin-bottom:1rem"></div>
+              <div id="choices-container" class="scenario-choices"></div>
+            </div>
+            <div id="outcome-panel" class="scenario-outcome hidden"></div>
+          </div>
+        </div>
+
+        <div style="display:flex;gap:.75rem;margin-top:1rem;flex-wrap:wrap">
+          <button id="next-step-btn" class="btn btn-gold hidden" onclick="nextStep()">Next Step →</button>
+          <button id="restart-btn" class="btn btn-outline hidden" onclick="restartScenario()">↺ Restart</button>
+          <button id="all-scenarios-btn" class="btn btn-outline hidden" onclick="exitScenario()">← All Scenarios</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/scenario-data.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('scenarios');
+buildTopbar('Dispatch Scenarios',[{label:'Home',href:'dashboard.html'},{label:'Scenarios'}]);
+
+let currentScenario = null;
+let currentStep = 0;
+let answered = false;
+let score = 0;
+let total = 0;
+
+// Render scenario cards
+document.getElementById('scenario-grid').innerHTML = SCENARIOS.map(s => `
+  <div class="scenario-card" onclick="startScenario(${s.id})">
+    <div class="scenario-card-img">${s.icon}</div>
+    <div class="scenario-card-body">
+      <div class="scenario-card-meta">
+        <span class="badge badge-blue">${s.category}</span>
+        <span class="badge ${s.difficulty==='Basic'?'badge-green':s.difficulty==='Intermediate'?'badge-amber':'badge-red'}">${s.difficulty}</span>
+      </div>
+      <div class="scenario-card-title">${s.title}</div>
+      <div class="scenario-card-desc">${s.dispatch.substring(0,100)}…</div>
+      <div style="margin-top:.75rem;font-size:.75rem;color:var(--text-muted)">⚖️ ${s.laws.slice(0,2).join(' · ')}</div>
+    </div>
+  </div>`).join('');
+
+function startScenario(id) {
+  currentScenario = SCENARIOS.find(s => s.id === id);
+  currentStep = 0;
+  answered = false;
+  score = 0;
+  total = currentScenario.steps.length;
+
+  document.getElementById('scenario-select').classList.add('hidden');
+  document.getElementById('scenario-viewer').classList.remove('hidden');
+  document.getElementById('scene-emoji').textContent = currentScenario.sceneEmoji;
+
+  // Set dispatch
+  const now = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+  document.getElementById('dispatch-time').textContent = now;
+  document.getElementById('dispatch-text').textContent = '🔊 DISPATCH: ' + currentScenario.dispatch;
+
+  // Animate dispatch text
+  typeText('dispatch-text', '🔊 DISPATCH: ' + currentScenario.dispatch, 25);
+  document.getElementById('scene-desc').textContent = currentScenario.situation;
+
+  renderStep();
+  logHours(0.25);
+}
+
+function typeText(elementId, text, speed) {
+  const el = document.getElementById(elementId);
+  el.textContent = '';
+  let i = 0;
+  const timer = setInterval(() => {
+    el.textContent += text[i++];
+    if (i >= text.length) clearInterval(timer);
+  }, speed);
+}
+
+function renderStep() {
+  const step = currentScenario.steps[currentStep];
+  if (!step) return;
+  answered = false;
+
+  document.getElementById('step-indicator').textContent = `Step ${currentStep + 1} of ${currentScenario.steps.length}`;
+  document.getElementById('question-text').textContent = step.question;
+  document.getElementById('outcome-panel').classList.add('hidden');
+  document.getElementById('next-step-btn').classList.add('hidden');
+  document.getElementById('restart-btn').classList.add('hidden');
+  document.getElementById('all-scenarios-btn').classList.add('hidden');
+
+  const letters = ['A','B','C','D'];
+  document.getElementById('choices-container').innerHTML = step.choices.map((c, i) => `
+    <button class="choice-btn" onclick="selectChoice(${i})" id="choice-${i}">
+      <span class="choice-letter">${letters[i]}</span>
+      <span>${c.text}</span>
+    </button>`).join('');
+}
+
+function selectChoice(idx) {
+  if (answered) return;
+  answered = true;
+  const step = currentScenario.steps[currentStep];
+  const choice = step.choices[idx];
+  total++;
+
+  document.querySelectorAll('.choice-btn').forEach((b, i) => {
+    b.disabled = true;
+    if (step.choices[i].correct) b.classList.add('correct');
+    else if (i === idx && !choice.correct) b.classList.add('wrong');
+  });
+
+  const isCorrect = choice.correct;
+  if (isCorrect) score++;
+
+  const outcome = document.getElementById('outcome-panel');
+  outcome.classList.remove('hidden');
+  outcome.innerHTML = `
+    <div class="outcome-result ${isCorrect?'correct':'wrong'}">
+      ${isCorrect ? '✅ Correct Decision' : '❌ Incorrect Decision'}
+    </div>
+    <div class="outcome-analysis">${isCorrect ? step.correctExplain : step.wrongExplain}</div>
+    ${!isCorrect ? `
+    <div class="quiz-why-prompt">
+      <p>🤔 Why did you select that answer? (Optional reflection)</p>
+      <textarea id="why-answer" rows="2" placeholder="Write your reasoning here…"></textarea>
+    </div>` : ''}
+    <div class="outcome-laws">
+      <div class="law-ref">
+        <div class="law-ref-code">⚖️ Legal Reference</div>
+        <div class="law-ref-title">${step.law}</div>
+        <div class="law-ref-layman">💬 In plain terms: ${step.layman}</div>
+      </div>
+    </div>`;
+
+  const isLast = currentStep === currentScenario.steps.length - 1;
+  if (!isLast) {
+    document.getElementById('next-step-btn').classList.remove('hidden');
+  } else {
+    showFinalResult();
+  }
+}
+
+function nextStep() {
+  currentStep++;
+  renderStep();
+  document.getElementById('outcome-panel').classList.add('hidden');
+  document.getElementById('next-step-btn').classList.add('hidden');
+}
+
+function showFinalResult() {
+  const pct = Math.round(score / currentScenario.steps.length * 100);
+  document.getElementById('outcome-panel').innerHTML += `
+    <hr style="border-color:var(--border);margin:1rem 0">
+    <div style="text-align:center;padding:.75rem">
+      <div style="font-size:1.1rem;font-weight:700;margin-bottom:.5rem">Scenario Complete</div>
+      <div style="font-size:2.5rem;font-weight:900;color:${pct>=70?'var(--green-light)':'var(--amber-light)'}">${pct}%</div>
+      <div class="text-muted text-sm">${score} of ${currentScenario.steps.length} decisions correct</div>
+    </div>`;
+  document.getElementById('restart-btn').classList.remove('hidden');
+  document.getElementById('all-scenarios-btn').classList.remove('hidden');
+  saveQuizScore('Scenario: ' + currentScenario.title, score, currentScenario.steps.length);
+  showToast(`Scenario complete — ${pct}%`, pct >= 70 ? 'success' : 'warning');
+}
+
+function restartScenario() {
+  startScenario(currentScenario.id);
+}
+
+function exitScenario() {
+  document.getElementById('scenario-viewer').classList.add('hidden');
+  document.getElementById('scenario-select').classList.remove('hidden');
+  document.getElementById('scenario-viewer').classList.remove('hidden');
+  document.getElementById('scenario-viewer').classList.add('hidden');
+  document.getElementById('scenario-select').classList.remove('hidden');
+}
+
+// Live clock in bodycam HUD
+setInterval(() => {
+  const t = document.getElementById('hud-time-display');
+  if (t) t.textContent = new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+}, 1000);
+</script>
+</body>
+</html>

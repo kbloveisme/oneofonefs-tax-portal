@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Study Guide — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+      <div class="page-header">
+        <div class="page-title"><span class="pg-icon">📖</span> Texas Law Study Guide</div>
+        <div class="page-subtitle">Texas Penal Code · CCP · Transportation Code · Constitutional Law · Use of Force</div>
+      </div>
+      <div style="display:flex;gap:1.5rem;min-height:70vh">
+        <!-- TOC -->
+        <div style="width:220px;flex-shrink:0">
+          <div class="card" style="position:sticky;top:1rem;padding:0;overflow:hidden">
+            <div style="background:var(--bg-surface);padding:.75rem 1rem;font-weight:600;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)">Contents</div>
+            <nav id="sg-toc" style="padding:.5rem 0;max-height:80vh;overflow-y:auto"></nav>
+          </div>
+        </div>
+        <!-- Content -->
+        <div style="flex:1;min-width:0" id="sg-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('study');
+buildTopbar('Study Guide',[{label:'Home',href:'dashboard.html'},{label:'Study Guide'}]);
+
+const SECTIONS = [
+  {id:'tpc',icon:'⚖️',title:'Texas Penal Code',subs:[
+    {id:'tpc-intro',title:'Structure & Culpability',content:`
+<h3>TPC Structure</h3>
+<p>The Texas Penal Code (TPC) is codified at <strong>Vernon's Texas Statutes and Codes Annotated</strong>. It is divided into Titles covering General Provisions, Punishments, Offenses Against the Person, Property, Public Administration, and more.</p>
+<div class="law-block">TPC §1.02 — Objectives: (1) ensure public safety; (2) deter criminal conduct; (3) rehabilitate; (4) protect victims.</div>
+<h3 style="margin-top:1.25rem">Mental States (§6.02–6.03)</h3>
+<div class="offense-table">
+  <div class="off-hdr">Mental State</div><div class="off-hdr">Definition</div><div class="off-hdr">Example</div>
+  <div class="off-cell">Intentionally</div><div class="off-cell">Conscious objective or desire to engage in conduct or cause result</div><div class="off-cell">Deliberate murder</div>
+  <div class="off-cell">Knowingly</div><div class="off-cell">Aware that conduct is reasonably certain to cause result</div><div class="off-cell">Shooting into a crowd</div>
+  <div class="off-cell">Recklessly</div><div class="off-cell">Consciously disregards substantial and unjustifiable risk</div><div class="off-cell">Drag racing in traffic</div>
+  <div class="off-cell">Criminal Negligence</div><div class="off-cell">Ought to be aware of substantial and unjustifiable risk</div><div class="off-cell">Leaving loaded gun accessible to child</div>
+</div>
+<h3 style="margin-top:1.25rem">Offense Classifications (§12.02–12.50)</h3>
+<div class="offense-table">
+  <div class="off-hdr">Class</div><div class="off-hdr">Max Confinement</div><div class="off-hdr">Max Fine</div>
+  <div class="off-cell">Class C Misdemeanor</div><div class="off-cell">None (citation)</div><div class="off-cell">$500</div>
+  <div class="off-cell">Class B Misdemeanor</div><div class="off-cell">180 days county jail</div><div class="off-cell">$2,000</div>
+  <div class="off-cell">Class A Misdemeanor</div><div class="off-cell">1 year county jail</div><div class="off-cell">$4,000</div>
+  <div class="off-cell">State Jail Felony</div><div class="off-cell">180 days – 2 years state jail</div><div class="off-cell">$10,000</div>
+  <div class="off-cell">3rd Degree Felony</div><div class="off-cell">2 – 10 years TDC</div><div class="off-cell">$10,000</div>
+  <div class="off-cell">2nd Degree Felony</div><div class="off-cell">2 – 20 years TDC</div><div class="off-cell">$10,000</div>
+  <div class="off-cell">1st Degree Felony</div><div class="off-cell">5 – 99 years or life TDC</div><div class="off-cell">$10,000</div>
+  <div class="off-cell">Capital Felony</div><div class="off-cell">Life without parole or death</div><div class="off-cell">N/A</div>
+</div>`,},
+    {id:'tpc-persons',title:'Offenses Against Persons',content:`
+<h3>Assault — TPC §22.01</h3>
+<div class="law-block">§22.01(a): A person commits assault if they: (1) intentionally, knowingly, or recklessly cause bodily injury; (2) intentionally or knowingly threaten imminent bodily injury; (3) intentionally or knowingly cause physical contact the person knows or should know is offensive.</div>
+<p style="margin-top:.75rem"><strong>Classification:</strong> Class A Misdemeanor (basic) → 3rd Degree Felony if against public servant, family member (prior conviction), or causes serious bodily injury.</p>
+<h3 style="margin-top:1.25rem">Aggravated Assault — TPC §22.02</h3>
+<div class="law-block">§22.02(a): Assault + (1) serious bodily injury OR (2) uses/exhibits deadly weapon. 2nd Degree Felony → 1st Degree if against public servant.</div>
+<h3 style="margin-top:1.25rem">Murder — TPC §19.02</h3>
+<div class="law-block">§19.02(b): (1) Intentionally or knowingly causes death; (2) intends serious bodily injury and commits clearly dangerous act; (3) commits/attempts felony and causes death (felony murder). 1st Degree Felony.</div>
+<h3 style="margin-top:1.25rem">Capital Murder — TPC §19.03</h3>
+<p>Murder + specific circumstances: peace officer/firefighter on duty; murder for remuneration; during kidnapping/burglary/robbery/aggravated sexual assault/arson/obstruction; multiple victims; child under 10; correctional employee.</p>`,},
+    {id:'tpc-property',title:'Property Offenses',content:`
+<h3>Theft — TPC §31.03</h3>
+<div class="offense-table">
+  <div class="off-hdr">Value</div><div class="off-hdr">Classification</div>
+  <div class="off-cell">Under $100</div><div class="off-cell">Class C Misdemeanor</div>
+  <div class="off-cell">$100–$749</div><div class="off-cell">Class B Misdemeanor</div>
+  <div class="off-cell">$750–$2,499</div><div class="off-cell">Class A Misdemeanor</div>
+  <div class="off-cell">$2,500–$29,999</div><div class="off-cell">State Jail Felony</div>
+  <div class="off-cell">$30,000–$149,999</div><div class="off-cell">3rd Degree Felony</div>
+  <div class="off-cell">$150,000–$299,999</div><div class="off-cell">2nd Degree Felony</div>
+  <div class="off-cell">$300,000+</div><div class="off-cell">1st Degree Felony</div>
+</div>
+<h3 style="margin-top:1.25rem">Burglary of Habitation — TPC §30.02</h3>
+<div class="law-block">Without effective consent of owner, enters (or remains concealed) in a habitation with intent to commit a felony, theft, or assault. 2nd Degree Felony (1st if commits/attempts felony other than theft inside).</div>`,},
+  ]},
+  {id:'ccp',icon:'📋',title:'Code of Criminal Procedure',subs:[
+    {id:'ccp-arrest',title:'Arrest Authority',content:`
+<h3>Arrest Without Warrant — CCP Art. 14.01</h3>
+<div class="law-block">Art. 14.01(b): A peace officer may arrest an offender without a warrant for any offense committed in his presence or within his view.</div>
+<p style="margin-top:.75rem">Art. 14.03 provides additional warrantless arrest authority including: assault family violence with reasonable belief it will continue; discharging firearm in municipality; violation of protective order.</p>
+<h3 style="margin-top:1.25rem">Probable Cause</h3>
+<p>Articulable facts and circumstances sufficient to warrant a prudent person in believing the suspect has committed or is committing an offense. <em>Illinois v. Gates</em> totality of the circumstances test.</p>
+<h3 style="margin-top:1.25rem">Terry Stop (Art. 14 / 4th Amend.)</h3>
+<p>Reasonable articulable suspicion of criminal activity allows brief detention. <em>Terry v. Ohio</em> (1968). Pat-down frisk requires additional reasonable belief person is armed and dangerous.</p>`,},
+    {id:'ccp-search',title:'Search & Seizure',content:`
+<h3>Search Warrant Requirements — Art. 18.01–18.02</h3>
+<p>Written affidavit stating: (1) probable cause that specific offense has been committed; (2) suspect or evidence will be found at a designated place. Neutral magistrate must issue warrant.</p>
+<h3 style="margin-top:1.25rem">Warrant Exceptions</h3>
+<div class="offense-table">
+  <div class="off-hdr">Exception</div><div class="off-hdr">Key Case</div><div class="off-hdr">Requirements</div>
+  <div class="off-cell">Consent</div><div class="off-cell">Schneckloth v. Bustamonte</div><div class="off-cell">Voluntary, knowing — no coercion</div>
+  <div class="off-cell">Plain View</div><div class="off-cell">Horton v. California</div><div class="off-cell">Lawful vantage point, incriminating nature immediately apparent</div>
+  <div class="off-cell">Automobile</div><div class="off-cell">Carroll v. United States</div><div class="off-cell">Probable cause to believe contraband in vehicle</div>
+  <div class="off-cell">Exigent Circumstances</div><div class="off-cell">Mincey v. Arizona</div><div class="off-cell">Emergency, hot pursuit, destruction of evidence, officer safety</div>
+  <div class="off-cell">Search Incident to Arrest</div><div class="off-cell">Chimel v. California</div><div class="off-cell">Lawful arrest; person and area within immediate control</div>
+  <div class="off-cell">Inventory</div><div class="off-cell">South Dakota v. Opperman</div><div class="off-cell">Standardized department procedure</div>
+</div>`,},
+  ]},
+  {id:'uof',icon:'🛡️',title:'Use of Force',subs:[
+    {id:'uof-law',title:'Use of Force Law',content:`
+<h3>Graham v. Connor (1989)</h3>
+<div class="law-block">Objective reasonableness standard: whether the officer's actions are "objectively reasonable" in light of the facts and circumstances confronting them, without regard to underlying intent or motivation. Factors: (1) severity of crime; (2) immediate threat to officer/others; (3) active resistance or fleeing.</div>
+<h3 style="margin-top:1.25rem">Tennessee v. Garner (1985)</h3>
+<div class="law-block">Deadly force to prevent escape is only constitutional if the officer has probable cause to believe the suspect poses a significant threat of death or serious physical injury to the officer or others.</div>
+<h3 style="margin-top:1.25rem">TPC §9.51 — Law Enforcement Use of Force</h3>
+<div class="law-block">A peace officer is justified in using force against another to make or assist in making an arrest or search if: (1) the peace officer reasonably believes the arrest or search is lawful; (2) the force is immediately necessary to make the arrest/search or to prevent escape after the arrest.</div>
+<h3 style="margin-top:1.25rem">Duty to Intervene</h3>
+<p>Texas law and TCOLE standards require officers who witness excessive force by another officer to intervene to stop the force and to report the incident. Failure to intervene may expose the officer to criminal and civil liability.</p>`,},
+  ]},
+  {id:'traffic',icon:'🚗',title:'Traffic Code',subs:[
+    {id:'traffic-speed',title:'Speed Laws & DWI',content:`
+<h3>Speed Limits — TTC §545.351</h3>
+<div class="law-block">An operator may not drive at a speed greater than is reasonable and prudent under the circumstances. Maximum lawful speeds: 30 mph in urban districts; 70 mph on interstate highways (daytime); 65 mph on other state highways (daytime).</div>
+<h3 style="margin-top:1.25rem">DWI — TPC §49.04</h3>
+<div class="law-block">A person commits DWI if they operate a motor vehicle in a public place while intoxicated. "Intoxicated" means: (A) not having the normal use of mental or physical faculties by reason of alcohol, drug, or combination; OR (B) having a BAC of 0.08 or higher.</div>
+<p style="margin-top:.75rem"><strong>Classifications:</strong> Class B Misdemeanor (basic) → Class A if BAC ≥ 0.15 → State Jail Felony (2 prior convictions) → 3rd Degree Felony (3+ convictions) → Child passenger adds State Jail Felony.</p>`,},
+  ]},
+  {id:'const',icon:'🏛️',title:'Constitutional Law',subs:[
+    {id:'const-4th',title:'4th, 5th & 6th Amendments',content:`
+<h3>4th Amendment — Search & Seizure</h3>
+<p>The right of the people to be secure in their persons, houses, papers, and effects, against unreasonable searches and seizures, shall not be violated. Warrant required with probable cause.</p>
+<h3 style="margin-top:1.25rem">5th Amendment — Self-Incrimination</h3>
+<div class="law-block">No person shall be compelled in any criminal case to be a witness against himself. — <em>Miranda v. Arizona</em> (1966): Before custodial interrogation, officers must warn: (1) right to remain silent; (2) anything said may be used against them; (3) right to attorney; (4) attorney provided if unable to afford one.</div>
+<h3 style="margin-top:1.25rem">6th Amendment — Right to Counsel</h3>
+<p>Once formal criminal proceedings begin (arrest, indictment), the right to counsel attaches. <em>Massiah v. United States</em>. Deliberate elicitation of incriminating statements without counsel present violates 6th Amendment.</p>
+<h3 style="margin-top:1.25rem">14th Amendment — Equal Protection & Due Process</h3>
+<p>No state shall deprive any person of life, liberty, or property without due process of law; nor deny equal protection. Basis for applying Bill of Rights to states (incorporation doctrine).</p>`,},
+  ]},
+];
+
+const toc = document.getElementById('sg-toc');
+const content = document.getElementById('sg-content');
+toc.innerHTML = SECTIONS.map(s => `
+  <div style="padding:.25rem .5rem;font-size:.7rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--text-muted);margin-top:.5rem">${s.icon} ${s.title}</div>
+  ${s.subs.map(sub => `<a href="#${sub.id}" onclick="showSection('${sub.id}');return false" class="toc-link" id="toc-${sub.id}">${sub.title}</a>`).join('')}`).join('');
+
+function showSection(id) {
+  document.querySelectorAll('.toc-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('toc-'+id)?.classList.add('active');
+  for (const s of SECTIONS) {
+    const sub = s.subs.find(x => x.id === id);
+    if (sub) {
+      content.innerHTML = `<div class="card">
+        <div style="font-size:.75rem;color:var(--text-muted);margin-bottom:.25rem">${s.icon} ${s.title}</div>
+        <h2 style="color:var(--gold);margin-bottom:1.25rem">${sub.title}</h2>
+        <div class="sg-content">${sub.content}</div>
+        <div style="margin-top:1.5rem;display:flex;gap:.75rem;flex-wrap:wrap">
+          <a href="quiz.html" class="btn btn-gold btn-sm">✏️ Practice Quiz</a>
+          <a href="lexicon.html" class="btn btn-outline btn-sm">📚 Lexicon</a>
+          <a href="https://statutes.capitol.texas.gov/" target="_blank" class="btn btn-outline btn-sm">📜 TX Statutes ↗</a>
+        </div>
+      </div>`;
+      break;
+    }
+  }
+  logHours(0.1);
+}
+showSection('tpc-intro');
+</script>
+</body>
+</html>

@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Police Academy — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+
+      <div class="page-header">
+        <div class="page-title"><span class="pg-icon">🎓</span> Police Academy Curriculum</div>
+        <div class="page-subtitle">6-Month TCOLE-aligned training program · Daily lessons · Weekly evaluations · Monthly certifications</div>
+      </div>
+
+      <div class="tabs-bar">
+        <button class="tab-btn active" data-tab="overview-tab">📋 Overview</button>
+        <button class="tab-btn" data-tab="month-tab">📅 Monthly</button>
+        <button class="tab-btn" data-tab="weekly-tab">📆 Weekly Schedule</button>
+        <button class="tab-btn" data-tab="daily-tab">🗓️ Daily Lessons</button>
+      </div>
+
+      <!-- Overview -->
+      <div id="overview-tab" class="tab-content active">
+        <div class="program-grid">
+          <div class="program-month-card" onclick="switchToMonth(1)">
+            <div class="pm-header"><span>📘</span><h3>Month 1</h3></div>
+            <div class="pm-subtitle">Foundations of Law Enforcement</div>
+            <ul class="pm-topics">
+              <li>Texas Law Enforcement Ethics</li>
+              <li>Texas Penal Code Overview</li>
+              <li>Texas Code of Criminal Procedure</li>
+              <li>Constitutional Law (4th, 5th, 6th, 14th)</li>
+              <li>TCOLE Standards &amp; Requirements</li>
+              <li>Officer Safety &amp; Use of Force</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-blue">2 Exams</span>
+            </div>
+          </div>
+
+          <div class="program-month-card" onclick="switchToMonth(2)">
+            <div class="pm-header"><span>📗</span><h3>Month 2</h3></div>
+            <div class="pm-subtitle">Traffic Laws &amp; Enforcement</div>
+            <ul class="pm-topics">
+              <li>Texas Transportation Code</li>
+              <li>Traffic Stop Procedures</li>
+              <li>DWI/DUI Investigation</li>
+              <li>Accident Investigation</li>
+              <li>Commercial Vehicle Enforcement</li>
+              <li>Pursuit Policy &amp; Procedures</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-blue">2 Exams</span>
+            </div>
+          </div>
+
+          <div class="program-month-card" onclick="switchToMonth(3)">
+            <div class="pm-header"><span>📙</span><h3>Month 3</h3></div>
+            <div class="pm-subtitle">Criminal Investigation</div>
+            <ul class="pm-topics">
+              <li>Crimes Against Persons</li>
+              <li>Property Crimes</li>
+              <li>Drug Laws &amp; Enforcement (HLSC)</li>
+              <li>Crime Scene Investigation</li>
+              <li>Interview &amp; Interrogation</li>
+              <li>Report Writing</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-blue">2 Exams</span>
+            </div>
+          </div>
+
+          <div class="program-month-card" onclick="switchToMonth(4)">
+            <div class="pm-header"><span>📕</span><h3>Month 4</h3></div>
+            <div class="pm-subtitle">Crisis Response</div>
+            <ul class="pm-topics">
+              <li>Mental Health Crisis Response</li>
+              <li>Domestic Violence (VAWA, Tex. FAM Code)</li>
+              <li>Juvenile Law &amp; Procedures</li>
+              <li>Crisis Negotiation Basics</li>
+              <li>Active Shooter Response</li>
+              <li>Mass Casualty Incidents</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-blue">2 Exams</span>
+            </div>
+          </div>
+
+          <div class="program-month-card" onclick="switchToMonth(5)">
+            <div class="pm-header"><span>📓</span><h3>Month 5</h3></div>
+            <div class="pm-subtitle">Community &amp; Specialized Units</div>
+            <ul class="pm-topics">
+              <li>Community Policing Strategies</li>
+              <li>Gang Intelligence</li>
+              <li>Cybercrime Basics</li>
+              <li>Human Trafficking (TPC Ch. 20A)</li>
+              <li>Civil Process &amp; Code Enforcement</li>
+              <li>Court Testimony</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-blue">2 Exams</span>
+            </div>
+          </div>
+
+          <div class="program-month-card" onclick="switchToMonth(6)">
+            <div class="pm-header"><span>🏆</span><h3>Month 6</h3></div>
+            <div class="pm-subtitle">Practical &amp; Certification</div>
+            <ul class="pm-topics">
+              <li>Scenario-Based Training</li>
+              <li>De-escalation Techniques</li>
+              <li>Firearms &amp; Less-Lethal Weapons</li>
+              <li>Defensive Tactics Review</li>
+              <li>TCOLE Basic Certification Prep</li>
+              <li>Comprehensive Final Examination</li>
+            </ul>
+            <div class="pm-footer">
+              <span class="badge badge-amber">26 Lessons</span>
+              <span class="badge badge-red">Final Exam</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem">
+          <h3 style="margin-bottom:1rem">Program Statistics</h3>
+          <div class="stat-grid">
+            <div class="stat-box"><div class="stat-number text-gold">6</div><div class="stat-label">Months</div></div>
+            <div class="stat-box"><div class="stat-number text-gold">26</div><div class="stat-label">Weeks</div></div>
+            <div class="stat-box"><div class="stat-number text-gold">156</div><div class="stat-label">Lessons</div></div>
+            <div class="stat-box"><div class="stat-number text-gold">600+</div><div class="stat-label">TCOLE Hours</div></div>
+            <div class="stat-box"><div class="stat-number text-gold">13</div><div class="stat-label">Exams</div></div>
+            <div class="stat-box"><div class="stat-number text-gold">254</div><div class="stat-label">TX Counties</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Monthly Detail -->
+      <div id="month-tab" class="tab-content">
+        <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1.5rem;flex-wrap:wrap">
+          <label class="label">Select Month:</label>
+          <div class="btn-group">
+            <button id="month-btn-1" class="btn btn-sm btn-gold" onclick="showMonth(1)">Month 1</button>
+            <button id="month-btn-2" class="btn btn-sm btn-outline" onclick="showMonth(2)">Month 2</button>
+            <button id="month-btn-3" class="btn btn-sm btn-outline" onclick="showMonth(3)">Month 3</button>
+            <button id="month-btn-4" class="btn btn-sm btn-outline" onclick="showMonth(4)">Month 4</button>
+            <button id="month-btn-5" class="btn btn-sm btn-outline" onclick="showMonth(5)">Month 5</button>
+            <button id="month-btn-6" class="btn btn-sm btn-outline" onclick="showMonth(6)">Month 6</button>
+          </div>
+        </div>
+        <div id="month-content"></div>
+      </div>
+
+      <!-- Weekly Schedule -->
+      <div id="weekly-tab" class="tab-content">
+        <div class="card" style="margin-bottom:1.5rem">
+          <h3>Standard Weekly Schedule</h3>
+          <p style="color:var(--text-secondary);margin-bottom:1rem">Each week follows a structured format aligned with TCOLE minimum hour requirements.</p>
+          <div class="weekly-schedule">
+            <div class="schedule-day">
+              <div class="schedule-day-hdr">Monday</div>
+              <div class="schedule-item blue">8:00 AM — Physical Fitness / PT</div>
+              <div class="schedule-item">9:00 AM — Law Review Lecture</div>
+              <div class="schedule-item">11:00 AM — Case Studies</div>
+              <div class="schedule-item gold">1:00 PM — Practical Application</div>
+              <div class="schedule-item">3:00 PM — Scenario Role-Play</div>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-hdr">Tuesday</div>
+              <div class="schedule-item blue">8:00 AM — Firearms Training</div>
+              <div class="schedule-item">10:00 AM — Criminal Law II</div>
+              <div class="schedule-item gold">1:00 PM — Traffic Stops Lab</div>
+              <div class="schedule-item">3:00 PM — Report Writing</div>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-hdr">Wednesday</div>
+              <div class="schedule-item blue">8:00 AM — Defensive Tactics</div>
+              <div class="schedule-item">10:00 AM — Texas Penal Code</div>
+              <div class="schedule-item gold">1:00 PM — Ethics Seminar</div>
+              <div class="schedule-item">3:00 PM — Dispatch Scenarios</div>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-hdr">Thursday</div>
+              <div class="schedule-item blue">8:00 AM — First Aid / CPR</div>
+              <div class="schedule-item">10:00 AM — CCP &amp; Evidence</div>
+              <div class="schedule-item gold">1:00 PM — Jurisdiction Lab</div>
+              <div class="schedule-item">3:00 PM — Quiz Review</div>
+            </div>
+            <div class="schedule-day">
+              <div class="schedule-day-hdr">Friday</div>
+              <div class="schedule-item blue">8:00 AM — Mental Health CIT</div>
+              <div class="schedule-item">10:00 AM — Weekly Exam</div>
+              <div class="schedule-item gold">1:00 PM — Results &amp; Review</div>
+              <div class="schedule-item">3:00 PM — Self Study</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Daily Lesson Viewer -->
+      <div id="daily-tab" class="tab-content">
+        <div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;margin-bottom:1.5rem">
+          <select id="month-sel" class="form-control" style="width:160px" onchange="updateWeeks()">
+            <option value="1">Month 1</option><option value="2">Month 2</option>
+            <option value="3">Month 3</option><option value="4">Month 4</option>
+            <option value="5">Month 5</option><option value="6">Month 6</option>
+          </select>
+          <select id="week-sel" class="form-control" style="width:160px" onchange="updateDays()">
+            <option value="1">Week 1</option><option value="2">Week 2</option>
+            <option value="3">Week 3</option><option value="4">Week 4</option>
+          </select>
+          <select id="day-sel" class="form-control" style="width:160px" onchange="loadLesson()">
+            <option value="1">Monday</option><option value="2">Tuesday</option>
+            <option value="3">Wednesday</option><option value="4">Thursday</option>
+            <option value="5">Friday</option>
+          </select>
+        </div>
+        <div id="lesson-content"></div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('academy');
+buildTopbar('Police Academy',[{label:'Home',href:'dashboard.html'},{label:'Academy'}]);
+
+const MONTH_DATA = {
+  1:{
+    title:'Foundations of Law Enforcement',
+    color:'#1a6fc4',
+    weeks:[
+      {week:1,title:'Orientation & Ethics',topics:[
+        {day:'Mon',title:'Welcome & Program Overview',content:'Introduction to TLEA Portal, course expectations, officer oath, chain of command. TCOLE Basic Certification overview.',law:'TCOLE Rule 217.1',hours:8},
+        {day:'Tue',title:'Code of Ethics',content:'Texas Law Enforcement Code of Ethics. Ethical dilemmas in policing. Noble cause corruption. Professional standards. Official Oppression under TPC §39.03.',law:'TPC §39.03; TCOLE Ethics',hours:8},
+        {day:'Wed',title:'Texas Constitution & Bill of Rights',content:'Texas Constitution Art. 1 Bill of Rights. Comparison to U.S. Constitution. Rights applicable to law enforcement encounters.',law:'Tex. Const. Art. I',hours:8},
+        {day:'Thu',title:'U.S. Constitutional Law',content:'4th Amendment — Search & Seizure. 5th Amendment — Self-Incrimination. 6th Amendment — Right to Counsel. 14th Amendment — Due Process.',law:'U.S. Const. Amend. IV, V, VI, XIV',hours:8},
+        {day:'Fri',title:'Week 1 Exam',content:'25-question multiple choice exam covering ethics, constitutional law, and TCOLE standards.',law:'Review all Week 1 material',hours:4},
+      ]},
+      {week:2,title:'Texas Penal Code Fundamentals',topics:[
+        {day:'Mon',title:'TPC Structure & Culpability',content:'TPC §1.07 definitions. Mental states: Intentionally, Knowingly, Recklessly, Criminal Negligence. Offense classifications.',law:'TPC §§1.07, 6.02, 6.03',hours:8},
+        {day:'Tue',title:'Offenses Against Persons I',content:'Assault (§22.01), Aggravated Assault (§22.02), Sexual Assault (§22.011), Aggravated Sexual Assault (§22.021).',law:'TPC Ch. 22',hours:8},
+        {day:'Wed',title:'Offenses Against Persons II',content:'Murder (§19.02), Capital Murder (§19.03), Manslaughter (§19.04), Criminally Negligent Homicide (§19.05). Robbery (§29.02), Aggravated Robbery (§29.03).',law:'TPC Ch. 19, 29',hours:8},
+        {day:'Thu',title:'Property Offenses',content:'Theft (§31.03) by value tiers. Burglary of Habitation (§30.02). Criminal Trespass (§30.05). Arson (§28.02). Criminal Mischief (§28.03).',law:'TPC Ch. 28, 30, 31',hours:8},
+        {day:'Fri',title:'Week 2 Exam',content:'30-question exam on TPC culpability, crimes against persons, and property crimes.',law:'TPC Ch. 1, 6, 19, 22, 28–31',hours:4},
+      ]},
+      {week:3,title:'Texas Code of Criminal Procedure',topics:[
+        {day:'Mon',title:'CCP Overview & Arrest Authority',content:'Art. 14.01 — Arrest without warrant. Art. 14.03 — Additional authority. Peace Officer defined. Citizen\'s arrest.',law:'CCP Art. 14.01–14.06',hours:8},
+        {day:'Tue',title:'Search & Seizure',content:'Art. 18.01–18.02 Search Warrants. Exceptions: exigent circumstances, plain view, consent, automobile exception, Terry frisk. Fourth Amendment requirements.',law:'CCP Art. 18; U.S. Const. Amend. IV',hours:8},
+        {day:'Wed',title:'Interrogation & Confessions',content:'Art. 38.22 — Statement of accused. Miranda v. Arizona (1966). Voluntariness standard. Invocation of rights. Re-interrogation rules.',law:'CCP Art. 38.22; Miranda v. Arizona',hours:8},
+        {day:'Thu',title:'Magistration & Bail',content:'Art. 15.17 — Magistration. Bail types (personal bond, cash, surety). Art. 17.15 — Bail amount rules. CCP Art. 15.22 — When arrested.',law:'CCP Art. 15, 17',hours:8},
+        {day:'Fri',title:'Week 3 Exam',content:'CCP arrest authority, search & seizure, interrogation rights, and bail procedures.',law:'CCP Art. 14, 15, 17, 18, 38',hours:4},
+      ]},
+      {week:4,title:'Use of Force',topics:[
+        {day:'Mon',title:'TPC Justification Defense',content:'TPC §9.01 definitions. §9.31 Self-Defense. §9.32 Deadly Force in Defense of Person. §9.33 Defense of Third Person.',law:'TPC Ch. 9',hours:8},
+        {day:'Tue',title:'Officer Use of Force',content:'TPC §9.51 — Law enforcement use of force. Graham v. Connor (1989) objective reasonableness standard. Force continuum.',law:'TPC §9.51; Graham v. Connor',hours:8},
+        {day:'Wed',title:'Deadly Force by Officers',content:'Tennessee v. Garner (1985) — fleeing felon rule. Duty to intervene. De-escalation requirements. Excited delirium vs. positional asphyxia.',law:'TPC §9.51; Tennessee v. Garner',hours:8},
+        {day:'Thu',title:'Less-Lethal &amp; Weapons Policy',content:'Tasers, OC spray, baton use. Constitutional requirements. Bite threshold. Mandatory reporting. Body camera requirements (Gov. Code Ch. 614).',law:'Gov. Code §614; TCOLE policy',hours:8},
+        {day:'Fri',title:'Month 1 Final Exam',content:'Comprehensive 50-question exam covering all Month 1 topics. Ethics, TPC, CCP, Use of Force.',law:'All Month 1 material',hours:4},
+      ]},
+    ]
+  },
+  2:{
+    title:'Traffic Laws & Enforcement',
+    color:'#2ecc71',
+    weeks:[
+      {week:1,title:'Texas Transportation Code',topics:[
+        {day:'Mon',title:'TTC Overview',content:'Transportation Code structure. Tx. Dept. of Public Safety jurisdiction. Local authority ordinances. TTC §545 — Operation &amp; Movement of Vehicles.',law:'Tex. Trans. Code §§545–547',hours:8},
+        {day:'Tue',title:'Moving Violations',content:'§545.351 Maximum speed. §545.401 Reckless driving. §545.062 Following too close. §545.302 Stopping, standing &amp; parking.',law:'TTC §§545.351–545.421',hours:8},
+        {day:'Wed',title:'Traffic Stop Procedures',content:'Lawful basis for stop (reasonable suspicion). Approach tactics. Contact with driver. License, registration, insurance requirements. Officer safety.',law:'Terry v. Ohio; TTC §§502–522',hours:8},
+        {day:'Thu',title:'Failure to Identify / Evading',content:'TPC §38.02 Failure to Identify. §38.04 Evading Arrest/Detention. Elements for each. Felony vs. misdemeanor evading.',law:'TPC §§38.02, 38.04',hours:8},
+        {day:'Fri',title:'Week 5 Exam',content:'Traffic code, stop procedures, failure to ID, evading.',law:'TTC §545; TPC §38',hours:4},
+      ]},
+      {week:2,title:'DWI Investigation',topics:[
+        {day:'Mon',title:'DWI Elements',content:'TPC §49.04 DWI elements. Loss of normal use of mental/physical faculties OR BAC ≥ 0.08. Observation cues: NHTSA SFST.',law:'TPC §49.04',hours:8},
+        {day:'Tue',title:'Standardized Field Sobriety Tests',content:'HGN. Walk-and-Turn. One-Leg Stand. Validation studies. Clues &amp; scoring. SFST in court.',law:'NHTSA SFST Manual; TPC §49.04',hours:8},
+        {day:'Wed',title:'Implied Consent &amp; Breath/Blood',content:'TTC §724 Implied Consent. Refusal consequences. Mandatory blood draws (TTC §724.012). DIC forms.',law:'TTC §724',hours:8},
+        {day:'Thu',title:'DWI Enhanced &amp; Drug DWI',content:'DWI with child passenger (§49.045). Intoxication Assault (§49.07). Intoxication Manslaughter (§49.08). DRE protocol.',law:'TPC §§49.045, 49.07, 49.08',hours:8},
+        {day:'Fri',title:'Week 6 Exam',content:'DWI law, SFST, implied consent, enhanced offenses.',law:'TPC §49; TTC §724',hours:4},
+      ]},
+      {week:3,title:'Accidents & Commercial Vehicles',topics:[
+        {day:'Mon',title:'Accident Investigation',content:'TTC §550 — Accidents. Duty to stop, provide information. Hit &amp; run charges. Collision report requirements. Fatality scene.',law:'TTC §550',hours:8},
+        {day:'Tue',title:'Crash Scene Management',content:'Securing the scene. Evidence collection. Witness identification. Trauma-informed approach. Notification procedures.',law:'TTC §§550, 601',hours:8},
+        {day:'Wed',title:'Commercial Vehicles',content:'CDL requirements. FMCSA regulations applicable in Texas. Log book violations. Weight limits (TTC §621). Hazmat placards.',law:'TTC §§621–623; 49 CFR',hours:8},
+        {day:'Thu',title:'Pursuit Policy',content:'TCC §§545, 546 — Emergency vehicles. Statewide pursuit guidelines. PIT maneuver policy. Liability considerations.',law:'TTC §§545–546; agency policy',hours:8},
+        {day:'Fri',title:'Week 7 Exam',content:'Accidents, crash investigation, commercial vehicles, pursuits.',law:'TTC §550, §621, §546',hours:4},
+      ]},
+      {week:4,title:'Advanced Traffic & Field Testing',topics:[
+        {day:'Mon',title:'Pedestrian & Bicycle Laws',content:'TTC §552 — Pedestrians. §551 — Bicycle operators. School bus stopping laws. Safety zones. Railroad crossing requirements.',law:'TTC §§551, 552, 545.253',hours:8},
+        {day:'Tue',title:'Warrant & Citation Procedures',content:'Class C misdemeanor citation. Promise to appear. Warrant issuance for failure to appear. Capias pro fine.',law:'CCP Art. 27; Local Gov. Code',hours:8},
+        {day:'Wed',title:'Racial Profiling Laws',content:'Gov. Code §§2, 3 — Racial Profiling policy requirements. Required data collection. Benchmarking. Traffic stop data reporting.',law:'Gov. Code Ch. 2; CCP Art. 2.132–2.135',hours:8},
+        {day:'Thu',title:'Vehicle &amp; Title Crimes',content:'TPC §32.34 Fraudulent Vehicle Title. TPC §31.07 Unauthorized use of vehicle. Chop shop investigation. VIN alteration.',law:'TPC §§31.07, 32.34; TTC §501',hours:8},
+        {day:'Fri',title:'Month 2 Final Exam',content:'50-question comprehensive exam covering all Month 2 traffic law topics.',law:'TTC; TPC §49; TPC §38',hours:4},
+      ]},
+    ]
+  }
+};
+
+// Populate months 3–6 with generic data for now
+for (let m = 3; m <= 6; m++) {
+  const titles = {3:'Criminal Investigation',4:'Crisis Response',5:'Community & Specialized',6:'Practical & Certification'};
+  MONTH_DATA[m] = {title:titles[m],color:['#e67e22','#9b59b6','#1abc9c','#e74c3c'][m-3],weeks:[]};
+  for (let w = 1; w <= 4; w++) {
+    const weekNum = (m-1)*4 + w;
+    MONTH_DATA[m].weeks.push({week:w,title:`Week ${weekNum} — ${titles[m]}`,topics:[
+      {day:'Mon',title:'Lecture: Legal Foundations',content:'Review applicable statutes, case law, and TCOLE training requirements for this week\'s topic.',law:'See module outline',hours:8},
+      {day:'Tue',title:'Case Studies',content:'Real-world case analysis applying this week\'s legal concepts.',law:'See module outline',hours:8},
+      {day:'Wed',title:'Practical Application Lab',content:'Hands-on scenarios and role-play exercises.',law:'TCOLE curriculum',hours:8},
+      {day:'Thu',title:'Report Writing & Documentation',content:'Proper documentation of incidents, use of police report forms, chain of custody.',law:'CCP Art. 2.1385',hours:8},
+      {day:'Fri',title:`Week ${weekNum} Exam`,content:'Weekly assessment covering all topics presented during the week.',law:'All Week '+weekNum+' material',hours:4},
+    ]});
+  }
+}
+
+function switchToMonth(m) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="month-tab"]').classList.add('active');
+  document.getElementById('month-tab').classList.add('active');
+  showMonth(m);
+}
+
+function showMonth(m) {
+  document.querySelectorAll('[id^="month-btn-"]').forEach(b => b.classList.replace('btn-gold','btn-outline'));
+  document.getElementById('month-btn-'+m)?.classList.replace('btn-outline','btn-gold');
+  const data = MONTH_DATA[m];
+  document.getElementById('month-content').innerHTML = `
+    <div class="card" style="border-left:4px solid ${data.color}">
+      <h2 style="color:var(--gold)">Month ${m}: ${data.title}</h2>
+    </div>
+    ${data.weeks.map(w => `
+      <div class="card" style="margin-top:1rem">
+        <div class="acc-header" onclick="this.nextElementSibling.classList.toggle('hidden')">
+          <span style="font-weight:600">Week ${(m-1)*4+w.week}: ${w.title}</span>
+          <span style="color:var(--gold)">▼</span>
+        </div>
+        <div class="acc-body ${w.week===1?'':'hidden'}">
+          <div class="day-grid">
+            ${w.topics.map(t => `
+              <div class="day-card" onclick="openLessonModal('${t.day}','${t.title}','${t.content.replace(/'/g,'&#39;')}','${t.law}',${t.hours})">
+                <div class="day-label">${t.day}</div>
+                <div class="day-title">${t.title}</div>
+                <div class="day-meta">${t.hours}h · ${t.law.substring(0,30)}${t.law.length>30?'…':''}</div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>`).join('')}`;
+}
+
+function loadLesson() {
+  const m = parseInt(document.getElementById('month-sel').value);
+  const w = parseInt(document.getElementById('week-sel').value);
+  const d = parseInt(document.getElementById('day-sel').value);
+  const days = ['Mon','Tue','Wed','Thu','Fri'];
+  const data = MONTH_DATA[m];
+  if (!data) return;
+  const week = data.weeks[w-1];
+  if (!week) return;
+  const topic = week.topics[d-1];
+  if (!topic) return;
+  openLessonView(topic, m, w);
+}
+
+function openLessonView(topic, m, w) {
+  document.getElementById('lesson-content').innerHTML = `
+    <div class="lesson-viewer">
+      <div class="lesson-banner" style="background:linear-gradient(135deg,var(--bg-surface) 0%,#0d1117 100%);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem 2rem;margin-bottom:1.5rem">
+        <div style="font-size:.8rem;color:var(--text-muted);margin-bottom:.25rem">Month ${m} · Week ${(m-1)*4+w} · ${topic.day}</div>
+        <h2 style="color:var(--gold);margin-bottom:.5rem">${topic.title}</h2>
+        <div style="display:flex;gap:.75rem;flex-wrap:wrap">
+          <span class="badge badge-blue">📜 ${topic.law}</span>
+          <span class="badge badge-amber">${topic.hours} Hours</span>
+        </div>
+      </div>
+      <div class="card">
+        <h3 style="margin-bottom:1rem">📖 Lesson Content</h3>
+        <p style="color:var(--text-secondary);line-height:1.75">${topic.content}</p>
+      </div>
+      <div class="card" style="margin-top:1rem">
+        <h3 style="margin-bottom:1rem">⚖️ Legal Reference</h3>
+        <div class="law-block">${topic.law}</div>
+        <p style="margin-top:.75rem;font-size:.875rem;color:var(--text-secondary)">
+          Review the full text of the applicable statutes at 
+          <a href="https://statutes.capitol.texas.gov/" target="_blank" style="color:var(--gold)">statutes.capitol.texas.gov</a>
+        </p>
+      </div>
+      <div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap">
+        <a href="quiz.html?cat=${m}" class="btn btn-gold">✏️ Take Quiz</a>
+        <a href="study-guide.html" class="btn btn-outline">📖 Study Guide</a>
+        <a href="scenarios.html" class="btn btn-outline">🚨 Practice Scenarios</a>
+      </div>
+    </div>`;
+  logHours(0.25);
+}
+
+function openLessonModal(day, title, content, law, hours) {
+  const topic = {day,title,content,law,hours};
+  const m = 1, w = 1;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  document.querySelector('[data-tab="daily-tab"]').classList.add('active');
+  document.getElementById('daily-tab').classList.add('active');
+  openLessonView(topic, m, w);
+}
+
+function updateWeeks() {}
+function updateDays() {}
+showMonth(1);
+loadLesson();
+</script>
+</body>
+</html>

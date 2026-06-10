@@ -3,183 +3,163 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>One Of One Financial Solutions - Secure Online Tax Portal</title>
+  <title>Texas Law Enforcement Academy — Cadet Training Portal</title>
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <!-- Hero Section -->
-  <section class="hero" id="hero">
-    <div class="hero-content">
-      <h1 class="fade-in">SECURE ONLINE TAX PORTAL FOR ONE OF ONE FINANCIAL SOLUTIONS</h1>
-      <p class="fade-in-delay">
-        File your individual or business taxes from anywhere with our secure client portal, online booking,
-        and mobile document upload.
-      </p>
-      <div class="button-group fade-in-delay-2">
-        <a href="#booking" class="btn btn-primary">Start Your Tax Return</a>
-        <a href="https://ooofs.taxwisemobile.com/" target="_blank" class="btn btn-secondary">
-          Open TaxWise Mobile Client App
-        </a>
+<body class="login-page">
+
+  <!-- Left: Branding -->
+  <div class="login-bg">
+    <div class="login-bg-text">
+      <!-- SVG Badge/Seal -->
+      <div class="seal-badge">
+        <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" width="180" height="180">
+          <circle cx="100" cy="100" r="95" fill="none" stroke="#c9a84b" stroke-width="3" opacity="0.5"/>
+          <circle cx="100" cy="100" r="82" fill="none" stroke="#c9a84b" stroke-width="1.5" opacity="0.35"/>
+          <circle cx="100" cy="100" r="68" fill="#0d1a2e" opacity="0.8"/>
+          <!-- Star points -->
+          <polygon points="100,18 108,38 130,38 113,50 120,70 100,57 80,70 87,50 70,38 92,38" fill="#c9a84b" opacity="0.9"/>
+          <!-- TX -->
+          <text x="100" y="95" text-anchor="middle" fill="#c9a84b" font-size="22" font-weight="900" font-family="Georgia,serif">TX</text>
+          <text x="100" y="115" text-anchor="middle" fill="#8ea8c3" font-size="8" font-weight="600" font-family="sans-serif" letter-spacing="2">PEACE OFFICER</text>
+          <!-- Ring text -->
+          <path id="arcTop" d="M 100,100 m -78,0 a 78,78 0 0,1 156,0" fill="none"/>
+          <text font-size="8" fill="#c9a84b" font-family="sans-serif" font-weight="700" letter-spacing="3">
+            <textPath href="#arcTop">STATE OF TEXAS · LAW ENFORCEMENT</textPath>
+          </text>
+          <path id="arcBot" d="M 100,100 m -78,0 a 78,78 0 0,0 156,0" fill="none"/>
+          <text font-size="7" fill="#8ea8c3" font-family="sans-serif" letter-spacing="2">
+            <textPath href="#arcBot">· PROTECT AND SERVE · ACADEMY ·</textPath>
+          </text>
+        </svg>
       </div>
-      <p class="mobile-note">
-        Prefer your phone? Tap "Open TaxWise Mobile Client App" to upload documents with your mobile device.
-      </p>
-    </div>
-
-    <div class="hero-image slide-in">
-      <img
-        src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=800&h=600&fit=crop"
-        alt="Professional tax consultant"
-        class="pan"
-      >
-    </div>
-  </section>
-
-  <!-- How It Works Section -->
-  <section class="how-it-works" id="how-it-works">
-    <h2 class="section-title fade-in">How It Works</h2>
-    <div class="steps-container">
-      <div class="step fade-in-up">
-        <div class="step-number">1</div>
-        <h3>Create Your Account</h3>
-        <p>
-          Create your secure One Of One client login, then choose Individual Federal &amp; State or
-          Business/LLC tax prep service.
-        </p>
-      </div>
-
-      <div class="step fade-in-up-delay">
-        <div class="step-number">2</div>
-        <h3>Book Your Appointment</h3>
-        <p>
-          Schedule an in-office or Zoom appointment using our online booking calendar and receive instant email
-          and text confirmation with your date, time, and meeting details.
-        </p>
-      </div>
-
-      <div class="step fade-in-up-delay-2">
-        <div class="step-number">3</div>
-        <h3>Complete Your Secure Interview</h3>
-        <p>
-          Answer step-by-step questions about your income, deductions, and credits; the system builds a
-          personalized IRS-based checklist and required forms list for you.
-        </p>
-      </div>
-
-      <div class="step fade-in-up-delay-3">
-        <div class="step-number">4</div>
-        <h3>Upload Your Documents</h3>
-        <p>
-          Upload W-2s, 1099s, prior-year returns, ID, and business records directly through the portal or via
-          TaxWise Mobile before your appointment.
-        </p>
-        <p class="note">
-          Prefer your phone? Tap "Open TaxWise Mobile Client App" above to upload with your mobile device.
-        </p>
+      <div class="login-bg-title">Texas Law Enforcement<br>Academy</div>
+      <div class="login-bg-sub">Cadet Training &amp; Certification Portal</div>
+      <div class="login-taglines">
+        <div class="login-tagline"><span class="dot"></span>TCOLE Compliant Curriculum</div>
+        <div class="login-tagline"><span class="dot"></span>All 254 Texas Counties Covered</div>
+        <div class="login-tagline"><span class="dot"></span>Texas Penal Code &amp; CCP Reference</div>
+        <div class="login-tagline"><span class="dot"></span>Interactive Dispatch Scenarios</div>
+        <div class="login-tagline"><span class="dot"></span>Graded Exams with Instant Feedback</div>
+        <div class="login-tagline"><span class="dot"></span>6-Month Structured Curriculum</div>
       </div>
     </div>
-  </section>
+  </div>
 
-  <!-- Services Section -->
-  <section class="services" id="services">
-    <h2 class="section-title fade-in">Choose Your Tax Service</h2>
-    <div class="service-cards">
-      <div class="service-card dissolve">
-        <h3>Individual Federal &amp; State Return</h3>
-        <p>Ideal for W-2 earners, retirees, and individuals with investments or side income.</p>
-        <ul>
-          <li>Secure document upload</li>
-          <li>IRS-based checklist</li>
-          <li>Virtual or in-office appointment</li>
-        </ul>
-        <a href="#booking" class="btn btn-primary">Book Individual Appointment</a>
-      </div>
-
-      <div class="service-card dissolve-delay">
-        <h3>Business / LLC Tax Return</h3>
-        <p>For sole proprietors, LLCs, and small businesses.</p>
-        <ul>
-          <li>Organizer &amp; profit/loss checklist</li>
-          <li>Upload 1099s, bank statements</li>
-          <li>Financial reports support</li>
-        </ul>
-        <a href="#booking" class="btn btn-primary">Book Business Appointment</a>
+  <!-- Right: Login Panel -->
+  <div class="login-panel">
+    <div class="login-logo-sm">
+      <span class="badge-icon">⚖️</span>
+      <div>
+        <h2>TLEA Training Portal</h2>
+        <p>Texas Law Enforcement Academy</p>
       </div>
     </div>
-  </section>
 
-  <!-- Policies Section -->
-  <section class="policies" id="policies">
-    <h2 class="section-title fade-in">Appointment Policies &amp; Reminders</h2>
-    <div class="policy-content fade-in-delay">
-      <p class="intro">
-        At One Of One Financial Solutions, we respect your time and ours. Please review our appointment policies
-        before booking.
-      </p>
-      <div class="policy-grid">
-        <div class="policy-item">
-          <h3>Automated Confirmations and Reminders</h3>
-          <ul>
-            <li>
-              You'll receive an email and text confirmation immediately after booking with your appointment date,
-              time, meeting link/location, and any documents already uploaded.
-            </li>
-            <li>
-              Automated reminders are sent approximately <strong>72 hours</strong> and <strong>24 hours</strong>
-              before your appointment by email and text to help reduce no-shows.
-            </li>
-          </ul>
+    <!-- Tabs -->
+    <div class="login-tabs">
+      <button class="login-tab-btn active" onclick="switchLoginTab('login')">Sign In</button>
+      <button class="login-tab-btn" onclick="switchLoginTab('register')">Register</button>
+    </div>
+
+    <!-- Login Form -->
+    <div id="form-login" class="login-form active">
+      <form onsubmit="handleLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Username or Badge Number</label>
+          <div class="input-group">
+            <span class="input-icon">👤</span>
+            <input id="login-user" type="text" class="form-control" placeholder="Enter username" required autocomplete="username">
+          </div>
         </div>
-
-        <div class="policy-item">
-          <h3>Cancellation &amp; Reschedule Policy</h3>
-          <ul>
-            <li>
-              You may cancel or reschedule up to <strong>24 hours</strong> before your appointment without a fee.
-            </li>
-            <li>Missed or late-cancelled appointments may be subject to a rescheduling fee.</li>
-          </ul>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <div class="input-group">
+            <span class="input-icon">🔒</span>
+            <input id="login-pass" type="password" class="form-control" placeholder="Enter password" required autocomplete="current-password">
+          </div>
         </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Booking Section -->
-  <section class="booking" id="booking">
-    <h2 class="section-title fade-in">Schedule Your Appointment</h2>
-    <div class="booking-content fade-in-delay">
-      <p>Ready to get started? Book your tax preparation appointment below.</p>
-      <div class="booking-placeholder">
-        <p>📅 <strong>Online Booking System</strong></p>
-        <p>This is where your Wix Bookings widget or calendar integration would appear.</p>
-        <a href="https://ooofs.taxwisemobile.com/" target="_blank" class="btn btn-primary">
-          Open TaxWise Mobile Portal
-        </a>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contact / Footer -->
-  <footer class="contact" id="contact">
-    <div class="contact-info fade-in">
-      <h2>One Of One Financial Solutions</h2>
-      <p><strong>Address:</strong> 311 N. High Street, Longview, Texas 75601</p>
-      <p><strong>Phone:</strong> <a href="tel:4302156141">(430) 215-6141</a></p>
-      <p><strong>Email:</strong> <a href="mailto:Krista.Buchanan@oneofonefs.com">Krista.Buchanan@oneofonefs.com</a></p>
-
-      <div class="hours">
-        <h3>Hours of Operation</h3>
-        <p>Monday - Friday: 9:00 AM - 7:00 PM</p>
-        <p>Saturday: 9:00 AM - 8:00 PM</p>
-        <p>Sunday: 10:00 AM - 3:00 PM</p>
+        <div class="form-group flex items-center justify-between">
+          <label class="check-label">
+            <input type="checkbox" id="remember-me"> Remember me
+          </label>
+          <a href="#" style="font-size:.85rem">Forgot password?</a>
+        </div>
+        <div id="login-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-gold btn-block btn-lg mt-2">
+          🔐 Sign In to Portal
+        </button>
+      </form>
+      <div class="login-footer">
+        <p>Demo credentials: <strong>cadet1 / academy123</strong></p>
+        <p style="margin-top:.5rem">Or register a new account above.</p>
       </div>
     </div>
 
-    <div class="footer-note">
-      <p>© 2026 One Of One Financial Solutions. All rights reserved.</p>
+    <!-- Register Form -->
+    <div id="form-register" class="login-form">
+      <form onsubmit="handleRegister(event)">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">First Name</label>
+            <input id="reg-first" type="text" class="form-control" placeholder="First name" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name</label>
+            <input id="reg-last" type="text" class="form-control" placeholder="Last name" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input id="reg-user" type="text" class="form-control" placeholder="Choose a username" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input id="reg-pass" type="password" class="form-control" placeholder="Min 8 characters" required minlength="8">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select id="reg-role" class="form-control">
+            <option value="cadet">Cadet (Police Academy Student)</option>
+            <option value="officer">Peace Officer</option>
+            <option value="professor">Professor / Instructor</option>
+            <option value="admin">Administrator</option>
+            <option value="da">District Attorney / Prosecutor</option>
+            <option value="judge">Judge / Magistrate</option>
+          </select>
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Badge / ID Number</label>
+            <input id="reg-badge" type="text" class="form-control" placeholder="Optional">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Department / County</label>
+            <input id="reg-dept" type="text" class="form-control" placeholder="e.g. Harris County">
+          </div>
+        </div>
+        <div id="reg-error" class="form-error hidden"></div>
+        <button type="submit" class="btn btn-gold btn-block btn-lg mt-2">
+          📋 Create Account
+        </button>
+      </form>
     </div>
-  </footer>
 
-  <script src="script.js"></script>
+    <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border);text-align:center;font-size:.75rem;color:var(--text-muted)">
+      For authorized personnel only. All activity is logged and audited.<br>
+      © 2026 Texas Law Enforcement Academy Training Portal
+    </div>
+  </div>
+
+  <script src="js/auth.js"></script>
+  <script>
+    function switchLoginTab(tab) {
+      document.querySelectorAll('.login-tab-btn').forEach((b,i) => {
+        b.classList.toggle('active', (tab==='login'&&i===0)||(tab==='register'&&i===1));
+      });
+      document.getElementById('form-login').classList.toggle('active', tab==='login');
+      document.getElementById('form-register').classList.toggle('active', tab==='register');
+    }
+  </script>
 </body>
 </html>

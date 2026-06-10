@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TCOLE Training — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+      <div class="page-header">
+        <div class="page-title"><span class="pg-icon">📋</span> TCOLE Training Requirements</div>
+        <div class="page-subtitle">Texas Commission on Law Enforcement — Basic Peace Officer Curriculum</div>
+      </div>
+
+      <!-- TCOLE Alert -->
+      <div class="alert alert-info" style="margin-bottom:1.5rem">
+        <span>📌</span>
+        <div>
+          <strong>TCOLE Basic Peace Officer Course — 618 Hours Minimum</strong>
+          <p style="margin:0;font-size:.875rem">All persons seeking a Texas Peace Officer license must complete the Basic Peace Officer Course approved by TCOLE, pass the licensing exam, and meet all requirements under <strong>TCOLE Rule 217.11</strong>.</p>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs" id="tcole-tabs">
+        <button class="tab-btn active" onclick="showTab('categories')">📚 Training Categories</button>
+        <button class="tab-btn" onclick="showTab('certs')">🏅 Certification Levels</button>
+        <button class="tab-btn" onclick="showTab('contact')">📞 TCOLE Contact</button>
+      </div>
+
+      <!-- Categories -->
+      <div id="tab-categories">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:1.25rem;flex-wrap:wrap;gap:.75rem">
+          <div>
+            <h3>Training Categories</h3>
+            <p class="text-sm text-muted">20 required categories · Select any to expand details</p>
+          </div>
+          <div style="display:flex;gap:.5rem;flex-wrap:wrap" id="category-filters">
+            <button class="btn btn-sm btn-outline cat-btn active" onclick="filterCat(this,'all')">All</button>
+            <button class="btn btn-sm btn-outline cat-btn" onclick="filterCat(this,'Core')">Core</button>
+            <button class="btn btn-sm btn-outline cat-btn" onclick="filterCat(this,'Legal')">Legal</button>
+            <button class="btn btn-sm btn-outline cat-btn" onclick="filterCat(this,'Tactics')">Tactics</button>
+            <button class="btn btn-sm btn-outline cat-btn" onclick="filterCat(this,'Special')">Special</button>
+            <button class="btn btn-sm btn-outline cat-btn" onclick="filterCat(this,'Operations')">Operations</button>
+          </div>
+        </div>
+        <div class="tcole-grid" id="tcole-grid"></div>
+      </div>
+
+      <!-- Cert Levels -->
+      <div id="tab-certs" class="hidden">
+        <h3 style="margin-bottom:1.25rem">TCOLE Certification Levels</h3>
+        <div class="tcole-cert-levels" id="cert-levels"></div>
+        <div class="card" style="margin-top:1rem">
+          <div class="card-header"><span class="card-title">📄 Continuing Education Requirements</span></div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem">
+            <div>
+              <div class="text-gold font-bold" style="margin-bottom:.35rem">Mandatory Annual Training</div>
+              <ul style="list-style:disc;padding-left:1.25rem">
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">Firearms qualification (annual)</li>
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">CPR/First Aid (biennial)</li>
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">Mental Health officer training (biennial)</li>
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">Racial profiling training (annual)</li>
+                <li style="color:var(--text-secondary);font-size:.875rem">Human trafficking (as required by TCOLE)</li>
+              </ul>
+            </div>
+            <div>
+              <div class="text-gold font-bold" style="margin-bottom:.35rem">40-Hour Biennial Requirement</div>
+              <ul style="list-style:disc;padding-left:1.25rem">
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">All licensed peace officers must complete 40 hours of continuing education every 2 years</li>
+                <li style="color:var(--text-secondary);font-size:.875rem;margin-bottom:.3rem">Must report training to TCOLE through their agency</li>
+                <li style="color:var(--text-secondary);font-size:.875rem">Failure results in license suspension</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Contact -->
+      <div id="tab-contact" class="hidden">
+        <h3 style="margin-bottom:1.25rem">TCOLE Contact Information</h3>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem">
+          <div class="card card-gold">
+            <div class="card-header"><span class="card-title">📋 TCOLE Main Office</span></div>
+            <div class="info-row"><span class="info-key">Agency</span><span class="info-val text-gold">Texas Commission on Law Enforcement</span></div>
+            <div class="info-row"><span class="info-key">Phone</span><span class="info-val">(512) 936-7700</span></div>
+            <div class="info-row"><span class="info-key">Address</span><span class="info-val">6330 U.S. Hwy 290 East, Austin, TX 78723</span></div>
+            <div class="info-row"><span class="info-key">Email</span><span class="info-val">help@tcole.texas.gov</span></div>
+            <div class="info-row"><span class="info-key">Website</span><span class="info-val"><a href="https://www.tcole.texas.gov" target="_blank">tcole.texas.gov</a></span></div>
+            <div class="info-row"><span class="info-key">Hours</span><span class="info-val">Mon–Fri: 8:00 AM – 5:00 PM</span></div>
+          </div>
+          <div class="card">
+            <div class="card-header"><span class="card-title">📚 Useful TCOLE Resources</span></div>
+            <div style="display:flex;flex-direction:column;gap:.5rem">
+              <a href="https://www.tcole.texas.gov/content/peace-officer-license" target="_blank" class="btn btn-outline btn-sm">Peace Officer Licensing →</a>
+              <a href="https://www.tcole.texas.gov/content/basic-licensing-requirements" target="_blank" class="btn btn-outline btn-sm">Basic License Requirements →</a>
+              <a href="https://www.tcole.texas.gov/content/training-provider-search" target="_blank" class="btn btn-outline btn-sm">Find Training Providers →</a>
+              <a href="https://www.tcole.texas.gov/content/rules-and-regulations" target="_blank" class="btn btn-outline btn-sm">Rules &amp; Regulations →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lesson Detail Modal -->
+      <div class="modal-overlay" id="lesson-modal">
+        <div class="modal" style="max-width:700px">
+          <div class="modal-header">
+            <h3 id="modal-title">Category Detail</h3>
+            <button class="modal-close" onclick="closeModal()">✕</button>
+          </div>
+          <div id="modal-body"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+<script src="js/auth.js"></script>
+<script src="js/tcole-data.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('tcole');
+buildTopbar('TCOLE Training',[{label:'Home',href:'dashboard.html'},{label:'TCOLE'}]);
+
+let currentCatFilter = 'all';
+
+function renderCategories(cats) {
+  document.getElementById('tcole-grid').innerHTML = cats.map(c=>`
+    <div class="tcole-card" onclick="openCategoryDetail(${c.id})" style="cursor:pointer">
+      <div class="tcole-card-header">
+        <div class="tcole-num">${c.num}</div>
+        <div style="flex:1">
+          <div class="tcole-category">${c.category}</div>
+          <div class="tcole-card-title">${c.title}</div>
+        </div>
+        <div class="tcole-hours">${c.hours} hrs</div>
+      </div>
+      <p class="text-sm" style="color:var(--text-muted);margin-bottom:.75rem">${c.description}</p>
+      <div class="tcole-topics">
+        ${c.topics.slice(0,4).map(t=>`<div class="tcole-topic">${t}</div>`).join('')}
+        ${c.topics.length>4?`<div class="tcole-topic text-muted">+${c.topics.length-4} more…</div>`:''}
+      </div>
+      <div style="margin-top:1rem;display:flex;align-items:center;justify-content:space-between">
+        <span class="badge ${c.category==='Core'?'badge-gold':c.category==='Legal'?'badge-blue':c.category==='Tactics'?'badge-red':c.category==='Special'?'badge-purple':'badge-green'}">${c.category}</span>
+        <span class="text-xs text-muted">${c.testQuestions} exam questions</span>
+      </div>
+    </div>`).join('');
+}
+
+function filterCat(btn, cat) {
+  document.querySelectorAll('.cat-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentCatFilter = cat;
+  const filtered = cat==='all' ? TCOLE_CATEGORIES : TCOLE_CATEGORIES.filter(c=>c.category===cat);
+  renderCategories(filtered);
+}
+
+function renderCerts() {
+  document.getElementById('cert-levels').innerHTML = TCOLE_CERT_LEVELS.map(c=>`
+    <div class="cert-level-card ${c.level}">
+      <div class="cert-icon">${c.icon}</div>
+      <div class="cert-title">${c.title}</div>
+      <div class="cert-hours">${c.hours.toLocaleString()}</div>
+      <div class="cert-hours-label">Training Hours</div>
+      <ul class="cert-reqs">
+        ${c.requirements.map(r=>`<li>${r}</li>`).join('')}
+      </ul>
+      <div class="text-xs text-muted" style="margin-top:.75rem;border-top:1px solid var(--border);padding-top:.5rem">
+        <strong>Renewal:</strong> ${c.renewal}
+      </div>
+    </div>`).join('');
+}
+
+function showTab(tab) {
+  ['categories','certs','contact'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('hidden', t!==tab);
+  });
+  document.querySelectorAll('.tab-btn').forEach((b,i)=>{
+    b.classList.toggle('active', ['categories','certs','contact'][i]===tab);
+  });
+}
+
+function openCategoryDetail(id) {
+  const c = TCOLE_CATEGORIES.find(x=>x.id===id);
+  document.getElementById('modal-title').textContent = `Category ${c.num}: ${c.title}`;
+  document.getElementById('modal-body').innerHTML = `
+    <div style="display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap">
+      <span class="badge badge-gold">${c.hours} hours required</span>
+      <span class="badge badge-blue">${c.category}</span>
+      <span class="badge badge-green">${c.testQuestions} exam questions</span>
+    </div>
+    <p style="margin-bottom:1.25rem">${c.description}</p>
+    <div class="info-section-title" style="color:var(--gold);font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:.75rem">📚 Topics Covered</div>
+    <div style="display:flex;flex-direction:column;gap:.4rem;margin-bottom:1.5rem">
+      ${c.topics.map((t,i)=>`<div style="display:flex;align-items:center;gap:.6rem;padding:.4rem .6rem;background:var(--bg-surface);border-radius:4px;font-size:.875rem"><span style="color:var(--gold);font-size:.7rem;font-weight:700">${String(i+1).padStart(2,'0')}</span>${t}</div>`).join('')}
+    </div>
+    <div class="law-ref">
+      <div class="law-ref-code">${c.tcoleRef}</div>
+      <div class="law-ref-title">Primary Legal Reference</div>
+      <div class="law-ref-text">This category is governed by ${c.tcoleRef}. Officers must be proficient in all topics listed above to meet TCOLE licensing standards.</div>
+    </div>
+    <div style="display:flex;gap:.75rem;margin-top:1.25rem;flex-wrap:wrap">
+      <a href="quiz.html?cat=${c.id}" class="btn btn-gold">✏️ Take Quiz — Category ${c.num}</a>
+      <a href="study-guide.html" class="btn btn-outline">📖 Study Guide</a>
+    </div>`;
+  document.getElementById('lesson-modal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('lesson-modal').classList.remove('open');
+}
+
+document.getElementById('lesson-modal').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+
+renderCategories(TCOLE_CATEGORIES);
+renderCerts();
+</script>
+</body>
+</html>

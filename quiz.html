@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Exams & Quizzes — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+
+      <!-- Select Screen -->
+      <div id="quiz-select-screen">
+        <div class="page-header">
+          <div class="page-title"><span class="pg-icon">✏️</span> Exams &amp; Quizzes</div>
+          <div class="page-subtitle">TCOLE-style graded exams · Instant feedback · Wrong-answer explanations in layman's terms</div>
+        </div>
+        <div class="alert alert-info" style="margin-bottom:1.5rem">
+          <span>📋</span>
+          <div>Select a category below to begin. Each exam is timed. Wrong answers include a full explanation AND a layman's-terms breakdown. Grades are recorded to your profile.</div>
+        </div>
+
+        <div style="display:flex;gap:.75rem;align-items:center;margin-bottom:1.25rem;flex-wrap:wrap">
+          <div class="form-group" style="margin:0;flex:1;min-width:200px">
+            <select id="question-count" class="form-control">
+              <option value="5">5 Questions (Quick)</option>
+              <option value="10" selected>10 Questions (Standard)</option>
+              <option value="20">20 Questions (Full Exam)</option>
+              <option value="all">All Questions (Comprehensive)</option>
+            </select>
+          </div>
+          <div class="form-group" style="margin:0;flex:1;min-width:200px">
+            <select id="time-limit" class="form-control">
+              <option value="0">No Time Limit</option>
+              <option value="300">5 Minutes</option>
+              <option value="600" selected>10 Minutes</option>
+              <option value="1200">20 Minutes</option>
+            </select>
+          </div>
+          <button class="btn btn-gold" onclick="startQuiz('all')">🎓 Start Comprehensive Exam</button>
+        </div>
+
+        <div class="quiz-select-grid" id="quiz-category-grid"></div>
+      </div>
+
+      <!-- Active Quiz -->
+      <div id="quiz-arena" class="hidden">
+        <div class="quiz-header-bar">
+          <div>
+            <div class="quiz-counter" id="q-counter">Question 1 of 10</div>
+            <div class="text-xs text-muted" id="q-category-label"></div>
+          </div>
+          <div class="quiz-timer" id="quiz-timer">10:00</div>
+          <div style="display:flex;gap:.5rem">
+            <span class="badge badge-green" id="correct-count">✓ 0</span>
+            <span class="badge badge-red" id="wrong-count">✗ 0</span>
+            <button class="btn btn-sm btn-outline" onclick="confirmExit()">Exit</button>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="progress" style="margin-bottom:1.5rem">
+          <div class="progress-bar progress-gold" id="quiz-progress-bar" style="width:0%"></div>
+        </div>
+
+        <div class="quiz-question-card">
+          <div class="quiz-q-category" id="q-category"></div>
+          <div class="quiz-q-text" id="q-text"></div>
+          <div id="q-code-block" class="quiz-q-code hidden"></div>
+          <div class="quiz-choices" id="q-choices"></div>
+          <div class="quiz-feedback" id="q-feedback"></div>
+        </div>
+
+        <div class="quiz-nav">
+          <div style="font-size:.85rem;color:var(--text-muted)" id="q-difficulty"></div>
+          <button id="next-q-btn" class="btn btn-gold hidden" onclick="nextQuestion()">
+            Next Question →
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Screen -->
+      <div id="quiz-results" class="hidden">
+        <div class="results-hero">
+          <div style="font-size:1.1rem;font-weight:600;margin-bottom:.5rem">Exam Complete</div>
+          <div class="results-grade" id="result-grade">A</div>
+          <div class="results-score" id="result-score">9 / 10 correct</div>
+          <div style="font-size:1rem;color:var(--text-muted);margin-top:.5rem" id="result-pct">90%</div>
+          <div style="margin-top:1.25rem" id="result-message"></div>
+        </div>
+
+        <div class="results-detail" id="result-detail"></div>
+
+        <div class="results-review">
+          <h3 style="margin-bottom:1.25rem">📋 Review Your Answers</h3>
+          <div id="results-review-list"></div>
+        </div>
+
+        <div style="display:flex;gap:.75rem;margin-top:1.5rem;flex-wrap:wrap">
+          <button class="btn btn-gold" onclick="retakeQuiz()">↺ Retake</button>
+          <button class="btn btn-outline" onclick="backToSelect()">← All Categories</button>
+          <a href="study-guide.html" class="btn btn-outline">📖 Study Guide</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/quiz-data.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('quiz');
+buildTopbar('Exams & Quizzes',[{label:'Home',href:'dashboard.html'},{label:'Quizzes'}]);
+
+// Render category cards
+document.getElementById('quiz-category-grid').innerHTML = QUIZ_CATEGORIES.map(c => `
+  <div class="quiz-select-card" onclick="startQuiz('${c.id}')">
+    <div class="quiz-select-icon">${c.icon}</div>
+    <div class="quiz-select-title">${c.label}</div>
+    <div class="quiz-select-count">${c.count} question${c.count!==1?'s':''}</div>
+    <span class="badge ${c.color}" style="margin-top:.75rem">${c.id.toUpperCase()}</span>
+  </div>`).join('');
+
+// Parse URL param for category
+const urlParams = new URLSearchParams(window.location.search);
+const catParam = urlParams.get('cat');
+if (catParam) {
+  const tcoleMap = {'1':'tcole_q','2':'tpc','3':'ccp','4':'uof','6':'traffic'};
+  setTimeout(() => startQuiz(tcoleMap[catParam] || 'general'), 300);
+}
+
+let quizQuestions = [];
+let currentQ = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let answered = false;
+let timerInterval = null;
+let timeLeft = 0;
+let userAnswers = [];
+let lastCatId = 'all';
+
+function startQuiz(catId) {
+  lastCatId = catId;
+  const countSel = document.getElementById('question-count').value;
+  const timeSel = parseInt(document.getElementById('time-limit').value);
+
+  let questions = getQuestionsByCategory(catId);
+  if (countSel !== 'all') questions = questions.slice(0, parseInt(countSel));
+  if (!questions.length) { showToast('No questions available for this category','warning'); return; }
+
+  quizQuestions = questions;
+  currentQ = 0;
+  correctCount = 0;
+  wrongCount = 0;
+  answered = false;
+  userAnswers = [];
+  timeLeft = timeSel;
+
+  document.getElementById('quiz-select-screen').classList.add('hidden');
+  document.getElementById('quiz-results').classList.add('hidden');
+  document.getElementById('quiz-arena').classList.remove('hidden');
+
+  if (timeSel > 0) startTimer(timeSel);
+  else document.getElementById('quiz-timer').textContent = '∞';
+
+  renderQuestion();
+  logHours(0.1);
+}
+
+function startTimer(seconds) {
+  clearInterval(timerInterval);
+  timeLeft = seconds;
+  updateTimerDisplay();
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    updateTimerDisplay();
+    if (timeLeft <= 30) document.getElementById('quiz-timer').classList.add('urgent');
+    if (timeLeft <= 0) { clearInterval(timerInterval); autoSubmit(); }
+  }, 1000);
+}
+
+function updateTimerDisplay() {
+  const m = Math.floor(timeLeft/60).toString().padStart(2,'0');
+  const s = (timeLeft%60).toString().padStart(2,'0');
+  document.getElementById('quiz-timer').textContent = `${m}:${s}`;
+}
+
+function autoSubmit() {
+  showToast('Time\'s up! Submitting quiz…','warning');
+  setTimeout(showResults, 1000);
+}
+
+function renderQuestion() {
+  const q = quizQuestions[currentQ];
+  answered = false;
+  const letters = ['A','B','C','D'];
+  const pct = Math.round((currentQ/quizQuestions.length)*100);
+
+  document.getElementById('q-counter').textContent = `Question ${currentQ+1} of ${quizQuestions.length}`;
+  document.getElementById('q-category-label').textContent = QUIZ_CATEGORIES.find(c=>c.id===q.cat)?.label || q.cat;
+  document.getElementById('q-category').textContent = QUIZ_CATEGORIES.find(c=>c.id===q.cat)?.label || q.cat;
+  document.getElementById('q-text').textContent = q.question;
+  document.getElementById('q-difficulty').textContent = `Difficulty: ${q.difficulty} · Law: ${q.law}`;
+  document.getElementById('quiz-progress-bar').style.width = pct + '%';
+  document.getElementById('correct-count').textContent = `✓ ${correctCount}`;
+  document.getElementById('wrong-count').textContent = `✗ ${wrongCount}`;
+
+  const codeBlock = document.getElementById('q-code-block');
+  if (q.code) { codeBlock.textContent = q.code; codeBlock.classList.remove('hidden'); }
+  else codeBlock.classList.add('hidden');
+
+  document.getElementById('q-choices').innerHTML = q.choices.map((c,i) => `
+    <button class="quiz-choice" id="choice-${i}" onclick="selectAnswer(${i})">
+      <span class="quiz-choice-letter">${letters[i]}</span>
+      <span>${c}</span>
+    </button>`).join('');
+
+  document.getElementById('q-feedback').classList.remove('show');
+  document.getElementById('next-q-btn').classList.add('hidden');
+}
+
+function selectAnswer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = quizQuestions[currentQ];
+  const isCorrect = idx === q.correct;
+  if (isCorrect) correctCount++; else wrongCount++;
+  userAnswers.push({ q, chosen: idx, correct: isCorrect });
+
+  document.getElementById('correct-count').textContent = `✓ ${correctCount}`;
+  document.getElementById('wrong-count').textContent = `✗ ${wrongCount}`;
+
+  document.querySelectorAll('.quiz-choice').forEach((btn, i) => {
+    btn.disabled = true;
+    if (i === q.correct) btn.classList.add('correct');
+    else if (i === idx && !isCorrect) btn.classList.add('wrong');
+  });
+
+  const fb = document.getElementById('q-feedback');
+  fb.innerHTML = `
+    <div class="quiz-feedback-result ${isCorrect?'text-green':'text-red'}">
+      ${isCorrect ? '✅ Correct!' : '❌ Incorrect'}
+    </div>
+    <div class="quiz-feedback-explain">${q.explain}</div>
+    <div class="quiz-feedback-law">📜 ${q.law}</div>
+    <div style="background:rgba(26,111,196,.06);border:1px solid rgba(26,111,196,.2);border-radius:var(--radius-sm);padding:.75rem 1rem;margin-top:.75rem;font-size:.85rem;color:var(--text-secondary)">
+      💬 <strong style="color:var(--blue-light)">Plain English:</strong> ${q.layman}
+    </div>
+    ${!isCorrect ? `<div class="quiz-why-prompt">
+      <p>🤔 Why did you select that answer? (Reflection — optional)</p>
+      <textarea id="why-${currentQ}" rows="2" class="form-control" style="margin-top:.35rem" placeholder="Thinking about your reasoning helps you learn…"></textarea>
+    </div>` : ''}`;
+  fb.classList.add('show');
+
+  const isLast = currentQ === quizQuestions.length - 1;
+  document.getElementById('next-q-btn').textContent = isLast ? 'See Results →' : 'Next Question →';
+  document.getElementById('next-q-btn').classList.remove('hidden');
+}
+
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= quizQuestions.length) showResults();
+  else renderQuestion();
+}
+
+function showResults() {
+  clearInterval(timerInterval);
+  const total = quizQuestions.length;
+  const pct = Math.round(correctCount / total * 100);
+  const grade = pct >= 90 ? 'A' : pct >= 80 ? 'B' : pct >= 70 ? 'C' : pct >= 60 ? 'D' : 'F';
+  const msgs = { A:'Outstanding! Excellent understanding of Texas law enforcement law.', B:'Good work! Review the areas where you struggled.', C:'Passing — but there\'s room for improvement. Study the wrong answers.', D:'Needs improvement. Review the study guide before retaking.', F:'Did not pass. Spend time in the Study Guide and try again.' };
+
+  document.getElementById('quiz-arena').classList.add('hidden');
+  document.getElementById('quiz-results').classList.remove('hidden');
+
+  document.getElementById('result-grade').textContent = grade;
+  document.getElementById('result-grade').className = `results-grade ${grade}`;
+  document.getElementById('result-score').textContent = `${correctCount} / ${total} correct`;
+  document.getElementById('result-pct').textContent = `${pct}%`;
+  document.getElementById('result-message').innerHTML = `<span class="badge ${grade==='A'||grade==='B'?'badge-green':grade==='C'?'badge-amber':'badge-red'}" style="font-size:.9rem;padding:.4rem 1rem">${msgs[grade]}</span>`;
+
+  document.getElementById('result-detail').innerHTML = `
+    <div class="stat-box"><div class="stat-number text-green">${correctCount}</div><div class="stat-label">Correct</div></div>
+    <div class="stat-box"><div class="stat-number text-red">${wrongCount}</div><div class="stat-label">Incorrect</div></div>
+    <div class="stat-box"><div class="stat-number ${grade==='A'||grade==='B'?'text-green':grade==='C'?'text-amber':'text-red'}">${pct}%</div><div class="stat-label">Score</div></div>
+    <div class="stat-box"><div class="stat-number text-gold">${grade}</div><div class="stat-label">Grade</div></div>`;
+
+  document.getElementById('results-review-list').innerHTML = userAnswers.map((ua,i) => `
+    <div class="review-item">
+      <div class="review-q">${i+1}. ${ua.q.question.substring(0,100)}${ua.q.question.length>100?'…':''}</div>
+      <div class="review-status ${ua.correct?'correct':'wrong'}">
+        ${ua.correct ? '✅ Correct' : '❌ Incorrect — Correct answer: ' + ['A','B','C','D'][ua.q.correct] + ': ' + ua.q.choices[ua.q.correct]}
+      </div>
+      ${!ua.correct ? `<div style="font-size:.8rem;color:var(--text-muted);margin-top:.25rem">${ua.q.layman}</div>` : ''}
+    </div>`).join('');
+
+  const catLabel = QUIZ_CATEGORIES.find(c=>c.id===lastCatId)?.label || 'Comprehensive';
+  saveQuizScore(catLabel, correctCount, total);
+  showToast(`Quiz complete — Grade: ${grade} (${pct}%)`, grade==='F'||grade==='D'?'warning':'success');
+}
+
+function retakeQuiz() {
+  document.getElementById('quiz-results').classList.add('hidden');
+  startQuiz(lastCatId);
+}
+
+function backToSelect() {
+  clearInterval(timerInterval);
+  document.getElementById('quiz-arena').classList.add('hidden');
+  document.getElementById('quiz-results').classList.add('hidden');
+  document.getElementById('quiz-select-screen').classList.remove('hidden');
+}
+
+function confirmExit() {
+  if (confirm('Exit quiz? Your progress will be lost.')) backToSelect();
+}
+</script>
+</body>
+</html>

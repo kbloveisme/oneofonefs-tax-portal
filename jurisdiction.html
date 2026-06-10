@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TX Jurisdiction — TLEA Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+      <div class="page-header">
+        <div class="page-title"><span class="pg-icon">🗺️</span> Texas Jurisdiction Reference</div>
+        <div class="page-subtitle">All 254 Texas Counties · City Charters · Local Laws · Applicable Codes</div>
+      </div>
+
+      <div class="jurisdiction-layout">
+        <!-- Left: County List -->
+        <div class="county-panel">
+          <div class="county-search-box">
+            <div class="input-group">
+              <span class="input-icon">🔍</span>
+              <input id="county-search" type="text" class="form-control" placeholder="Search counties or cities…" oninput="filterCounties(this.value)">
+            </div>
+            <div style="display:flex;gap:.5rem;margin-top:.6rem;flex-wrap:wrap" id="region-filters">
+              <button class="btn btn-sm btn-outline region-btn active" data-region="all" onclick="filterByRegion(this,'all')">All</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="DFW Metroplex" onclick="filterByRegion(this,'DFW Metroplex')">DFW</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="Gulf Coast" onclick="filterByRegion(this,'Gulf Coast')">Gulf</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="Hill Country" onclick="filterByRegion(this,'Hill Country')">Hill</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="East Texas" onclick="filterByRegion(this,'East Texas')">East</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="West Texas" onclick="filterByRegion(this,'West Texas')">West</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="Panhandle" onclick="filterByRegion(this,'Panhandle')">Pan</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="South Texas" onclick="filterByRegion(this,'South Texas')">South</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="Central Texas" onclick="filterByRegion(this,'Central Texas')">Central</button>
+              <button class="btn btn-sm btn-outline region-btn" data-region="North Texas" onclick="filterByRegion(this,'North Texas')">North</button>
+            </div>
+          </div>
+          <div class="county-list" id="county-list"></div>
+        </div>
+
+        <!-- Right: Info Panel -->
+        <div class="county-info-panel" id="county-info-panel">
+          <div class="placeholder">
+            <div class="big-icon">🗺️</div>
+            <h3>Select a County</h3>
+            <p>Choose any of Texas's 254 counties to view jurisdiction details, applicable laws, city charters, and law enforcement agencies.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/app.js"></script>
+<script>
+requireAuth();
+buildNav('jurisdiction');
+buildTopbar('Texas Jurisdiction', [{label:'Home',href:'dashboard.html'},{label:'TX Jurisdiction'}]);
+
+let currentRegion = 'all';
+let currentCounty = null;
+
+function renderCountyList(counties) {
+  const el = document.getElementById('county-list');
+  el.innerHTML = counties.map(c => `
+    <div class="county-item ${currentCounty?.id===c.id?'selected':''}" onclick="selectCounty(${c.id})">
+      <input type="checkbox" ${currentCounty?.id===c.id?'checked':''} onclick="event.stopPropagation();selectCounty(${c.id})">
+      <span style="flex:1">${c.name}</span>
+      <span class="text-xs text-muted">${c.region.split(' ')[0]}</span>
+    </div>`).join('');
+}
+
+function filterCounties(q) {
+  const counties = currentRegion === 'all' ? TEXAS_COUNTIES : TEXAS_COUNTIES.filter(c=>c.region===currentRegion);
+  const filtered = q ? counties.filter(c=>c.name.toLowerCase().includes(q.toLowerCase())||c.cities.some(ci=>ci.toLowerCase().includes(q.toLowerCase()))) : counties;
+  renderCountyList(filtered);
+}
+
+function filterByRegion(btn, region) {
+  document.querySelectorAll('.region-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  currentRegion = region;
+  filterCounties(document.getElementById('county-search').value);
+}
+
+function selectCounty(id) {
+  currentCounty = TEXAS_COUNTIES.find(c=>c.id===id);
+  filterCounties(document.getElementById('county-search').value);
+  renderCountyInfo(currentCounty);
+}
+
+function selectCity(city, county) {
+  document.querySelectorAll('.city-chip').forEach(c=>c.classList.remove('active'));
+  event.target.classList.add('active');
+  const isHR = county.pop && parseInt(county.pop.replace(/,/g,'')) > 5000;
+  const cityType = isHR ? 'Home Rule Charter City' : 'General Law City';
+  document.getElementById('city-detail').innerHTML = `
+    <div class="info-section">
+      <div class="info-section-title">📍 ${city}</div>
+      <div class="info-row"><span class="info-key">Municipality Type</span><span class="info-val">${cityType}</span></div>
+      <div class="info-row"><span class="info-key">County</span><span class="info-val">${county.name} County</span></div>
+      <div class="info-row"><span class="info-key">Region</span><span class="info-val">${county.region}</span></div>
+      ${city===county.seat?`<div class="info-row"><span class="info-key">Status</span><span class="info-val text-gold">✦ County Seat</span></div>`:''}
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">📜 City Charter Overview</div>
+      <div class="law-ref">
+        <div class="law-ref-code">Texas LGC § 9.001 — Home Rule</div>
+        <div class="law-ref-title">Home Rule Charter Authority</div>
+        <div class="law-ref-text">Municipalities with a population of more than 5,000 may adopt a home rule charter. Such cities possess all powers of self-government not inconsistent with the Texas Constitution or state law.</div>
+        <div class="law-ref-layman">💬 In plain English: Bigger cities can write their own rulebook (charter) for local government, as long as it doesn't conflict with state law.</div>
+      </div>
+      <div class="law-ref">
+        <div class="law-ref-code">Texas LGC § 51.001 — General Law</div>
+        <div class="law-ref-title">General Law City Powers</div>
+        <div class="law-ref-text">General law cities may exercise only those powers specifically granted by the Legislature. They may adopt ordinances, regulations, and resolutions that are necessary for the government of the municipality.</div>
+        <div class="law-ref-layman">💬 In plain English: Smaller cities can only do what state law specifically allows them to do.</div>
+      </div>
+    </div>
+    <div class="info-section">
+      <div class="info-section-title">⚖️ Applicable Municipal Codes</div>
+      <div class="law-ref">
+        <div class="law-ref-code">City Ordinance Authority</div>
+        <div class="law-ref-title">Common City Ordinances (Texas)</div>
+        <div class="law-ref-text">Texas cities typically regulate: noise ordinances, curfews, animal control, parking regulations, fire codes, public health ordinances, and building codes. Officers must know local ordinances in addition to state law.</div>
+        <div class="law-ref-layman">💬 Violations of city ordinances are Class C misdemeanors (fine-only). Example: City noise ordinance violation = ticket, no arrest.</div>
+      </div>
+    </div>`;
+}
+
+function renderCountyInfo(county) {
+  const panel = document.getElementById('county-info-panel');
+  panel.innerHTML = `
+    <div>
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;margin-bottom:1.5rem;flex-wrap:wrap">
+        <div>
+          <h2 style="color:var(--gold);font-size:1.6rem">${county.name} County</h2>
+          <p style="color:var(--text-muted);font-size:.875rem;margin:0">County Seat: <strong style="color:var(--text-primary)">${county.seat}</strong> · Region: ${county.region}</p>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+          <span class="badge badge-blue">${county.type}</span>
+          <span class="badge badge-gold">Pop. ~${county.pop}</span>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">📋 County Overview</div>
+        <div class="info-row"><span class="info-key">County Type</span><span class="info-val">${county.charter}</span></div>
+        <div class="info-row"><span class="info-key">Region</span><span class="info-val">${county.region}</span></div>
+        <div class="info-row"><span class="info-key">County Seat</span><span class="info-val text-gold">${county.seat}</span></div>
+        <div class="info-row"><span class="info-key">Population</span><span class="info-val">${county.pop}</span></div>
+        <div class="info-row"><span class="info-key">District Courts</span><span class="info-val text-sm">${county.courts}</span></div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🚔 Law Enforcement Agencies</div>
+        ${county.agencies.map(a=>`<div class="info-row"><span class="info-key">Agency</span><span class="info-val">${a}</span></div>`).join('')}
+        <div class="law-ref" style="margin-top:.75rem">
+          <div class="law-ref-code">Texas LGC § 85.021</div>
+          <div class="law-ref-title">County Sheriff — Primary Law Enforcement</div>
+          <div class="law-ref-text">The Sheriff is the primary law enforcement officer of each Texas county. The Sheriff is an elected county officer serving 4-year terms. The Sheriff has jurisdiction throughout the entire county.</div>
+          <div class="law-ref-layman">💬 The Sheriff is the top cop for the whole county. Even inside city limits, the Sheriff still has jurisdiction — but city police handle their area day-to-day.</div>
+        </div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🏙️ Cities in ${county.name} County</div>
+        <p class="text-sm" style="margin-bottom:.75rem;color:var(--text-muted)">Select a city for charter details and local ordinance information:</p>
+        <div class="city-chips">
+          ${county.cities.map(c=>`<div class="city-chip ${c===county.seat?'active':''}" onclick="selectCity('${c.replace(/'/g,"\\'")}', TEXAS_COUNTIES.find(co=>co.id===${county.id}))">${c}${c===county.seat?' ★':''}</div>`).join('')}
+        </div>
+        <div id="city-detail"></div>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">⚖️ Key Applicable Laws</div>
+        ${UNIVERSAL_TEXAS_LAWS.slice(0,6).map(law=>`
+          <div class="law-ref">
+            <div class="law-ref-code">${law.code}</div>
+            <div class="law-ref-title">${law.title}</div>
+            <div class="law-ref-layman">💬 ${law.layman}</div>
+          </div>`).join('')}
+        <a href="study-guide.html" class="btn btn-outline btn-sm" style="margin-top:.75rem">📖 Full Study Guide →</a>
+      </div>
+
+      <div class="info-section">
+        <div class="info-section-title">🗂️ County Government Structure</div>
+        <div class="law-ref">
+          <div class="law-ref-code">Texas Constitution Art. V § 18</div>
+          <div class="law-ref-title">County Officers</div>
+          <div class="law-ref-text">Each county elects: County Judge, 4 Commissioners, Sheriff, District/County Attorney, District/County Clerk, Tax Assessor-Collector, and Justices of the Peace (1–8 depending on population).</div>
+          <div class="law-ref-layman">💬 Your chain of command at the county level includes the Sheriff (law enforcement) and the DA (prosecution). The County Judge handles county court matters.</div>
+        </div>
+      </div>
+    </div>`;
+
+  // Auto-select county seat city
+  if (county.cities.length > 0) {
+    selectCity(county.seat, county);
+  }
+}
+
+// Initialize
+renderCountyList(TEXAS_COUNTIES);
+</script>
+</body>
+</html>

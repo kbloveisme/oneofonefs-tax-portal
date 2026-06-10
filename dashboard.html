@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard — TLEA Training Portal</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="app-shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="main-content">
+    <div class="topbar" id="topbar"></div>
+    <div class="page-content">
+      <div id="welcome-banner" class="welcome-banner">
+        <div class="welcome-text">
+          <h2 id="welcome-name">Welcome back, Officer</h2>
+          <p id="welcome-sub">Continue where you left off. Your progress is saved automatically.</p>
+        </div>
+        <span id="welcome-badge" class="welcome-badge">🏛️ Cadet</span>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid" id="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon">📚</div>
+          <div class="stat-card-val" id="stat-lessons">0</div>
+          <div class="stat-card-label">Lessons Completed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">⏱️</div>
+          <div class="stat-card-val" id="stat-hours">0</div>
+          <div class="stat-card-label">Training Hours</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📊</div>
+          <div class="stat-card-val" id="stat-score">—</div>
+          <div class="stat-card-label">Avg Quiz Score</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon">📅</div>
+          <div class="stat-card-val" id="stat-week">Wk 1</div>
+          <div class="stat-card-label">Current Week</div>
+        </div>
+      </div>
+
+      <!-- Current Lesson -->
+      <div class="lesson-current">
+        <div class="lesson-current-header">
+          <h3>📍 Current Lesson</h3>
+          <span class="badge badge-amber" id="lesson-week-badge">Week 1</span>
+        </div>
+        <h2 id="lesson-title" style="margin-bottom:.5rem">Introduction to Texas Law Enforcement</h2>
+        <div class="lesson-meta">
+          <span class="badge badge-blue" id="lesson-cat">Orientation</span>
+          <span class="badge badge-gold" id="lesson-day">Day 1</span>
+          <span class="badge badge-green">TCOLE Approved</span>
+        </div>
+        <p id="lesson-desc" style="margin-bottom:1.25rem">Overview of the Texas law enforcement profession, TCOLE requirements, the role of peace officers, and the Texas Penal Code framework.</p>
+        <div class="module-tile-progress" style="margin-bottom:1.5rem">
+          <div class="module-tile-pct" id="lesson-pct">15% Complete</div>
+          <div class="progress"><div class="progress-bar progress-gold" id="lesson-bar" style="width:15%"></div></div>
+        </div>
+        <div class="lesson-actions">
+          <a href="academy.html" class="btn btn-gold">▶ Continue Lesson</a>
+          <a href="quiz.html" class="btn btn-outline">✏️ Take Quiz</a>
+          <a href="scenarios.html" class="btn btn-outline">🎭 Run Scenario</a>
+        </div>
+      </div>
+
+      <!-- Module Tiles -->
+      <h3 style="margin-bottom:1rem;color:var(--text-secondary);font-size:.85rem;text-transform:uppercase;letter-spacing:.08em">All Training Modules</h3>
+      <div class="module-tiles">
+        <a href="academy.html" class="module-tile">
+          <span class="module-tile-icon">📚</span>
+          <span class="module-tile-title">Academy Curriculum</span>
+          <span class="module-tile-desc">6-month structured program by day/week/month</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct" id="prog-academy">0%</div>
+            <div class="progress"><div class="progress-bar progress-blue" id="bar-academy" style="width:0%"></div></div>
+          </div>
+        </a>
+        <a href="jurisdiction.html" class="module-tile">
+          <span class="module-tile-icon">🗺️</span>
+          <span class="module-tile-title">TX Jurisdiction</span>
+          <span class="module-tile-desc">All 254 counties · cities · laws · ordinances</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct">Reference</div>
+            <div class="progress"><div class="progress-bar progress-gold" style="width:100%"></div></div>
+          </div>
+        </a>
+        <a href="scenarios.html" class="module-tile">
+          <span class="module-tile-icon">🎭</span>
+          <span class="module-tile-title">Dispatch Scenarios</span>
+          <span class="module-tile-desc">First-person interactive 911 call simulations</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct" id="prog-scenarios">0%</div>
+            <div class="progress"><div class="progress-bar progress-blue" id="bar-scenarios" style="width:0%"></div></div>
+          </div>
+        </a>
+        <a href="tcole.html" class="module-tile">
+          <span class="module-tile-icon">📋</span>
+          <span class="module-tile-title">TCOLE Training</span>
+          <span class="module-tile-desc">All categories · hours · certification levels</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct" id="prog-tcole">0%</div>
+            <div class="progress"><div class="progress-bar progress-green" id="bar-tcole" style="width:0%"></div></div>
+          </div>
+        </a>
+        <a href="quiz.html" class="module-tile">
+          <span class="module-tile-icon">✏️</span>
+          <span class="module-tile-title">Exams &amp; Quizzes</span>
+          <span class="module-tile-desc">Graded exams with layman-term explanations</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct" id="prog-quiz">0 taken</div>
+            <div class="progress"><div class="progress-bar progress-gold" id="bar-quiz" style="width:0%"></div></div>
+          </div>
+        </a>
+        <a href="study-guide.html" class="module-tile">
+          <span class="module-tile-icon">📖</span>
+          <span class="module-tile-title">Study Guide</span>
+          <span class="module-tile-desc">Texas Penal Code · CCP · Traffic · Use of Force</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct">Reference</div>
+            <div class="progress"><div class="progress-bar progress-gold" style="width:100%"></div></div>
+          </div>
+        </a>
+        <a href="lexicon.html" class="module-tile">
+          <span class="module-tile-icon">🔤</span>
+          <span class="module-tile-title">Legal Lexicon</span>
+          <span class="module-tile-desc">Dictionary of law enforcement &amp; legal terms</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct">Reference</div>
+            <div class="progress"><div class="progress-bar progress-gold" style="width:100%"></div></div>
+          </div>
+        </a>
+        <a href="resources.html" class="module-tile">
+          <span class="module-tile-icon">📞</span>
+          <span class="module-tile-title">Resources</span>
+          <span class="module-tile-desc">TCOLE · DPS · County contacts · Hotlines</span>
+          <div class="module-tile-progress">
+            <div class="module-tile-pct">Reference</div>
+            <div class="progress"><div class="progress-bar progress-gold" style="width:100%"></div></div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Quick Reference -->
+      <div class="grid-2" style="margin-top:1rem">
+        <div class="card card-gold">
+          <div class="card-header">
+            <span class="card-title">⚡ Quick Reference</span>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:.5rem">
+            <a href="study-guide.html#tpc" class="btn btn-outline btn-sm">Texas Penal Code</a>
+            <a href="study-guide.html#ccp" class="btn btn-outline btn-sm">Code of Criminal Procedure</a>
+            <a href="study-guide.html#uof" class="btn btn-outline btn-sm">Use of Force Standards</a>
+            <a href="study-guide.html#4th" class="btn btn-outline btn-sm">4th Amendment / Search &amp; Seizure</a>
+            <a href="study-guide.html#miranda" class="btn btn-outline btn-sm">Miranda Rights</a>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">📊 Recent Quiz Scores</span>
+          </div>
+          <div id="recent-scores">
+            <p class="text-muted text-sm text-center" style="padding:1.5rem 0">No quizzes taken yet.<br>
+              <a href="quiz.html" class="btn btn-sm btn-primary" style="margin-top:.75rem">Take Your First Quiz</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+<div class="toast-container"></div>
+
+<script src="js/auth.js"></script>
+<script src="js/app.js"></script>
+<script>
+  const user = requireAuth();
+  if (user) {
+    buildNav('dashboard');
+    buildTopbar('Dashboard', [{label:'Home', href:'dashboard.html'}]);
+
+    document.getElementById('welcome-name').textContent = `Welcome back, ${user.firstName} ${user.lastName}`;
+    document.getElementById('welcome-sub').textContent = `Role: ${getRoleLabel(user.role)} · Dept: ${user.dept || 'Unassigned'}`;
+    document.getElementById('welcome-badge').textContent = `🏛️ ${getRoleLabel(user.role)}`;
+    document.getElementById('welcome-badge').className = 'welcome-badge ' + getRoleBadgeClass(user.role);
+
+    const p = user.progress || {};
+    document.getElementById('stat-lessons').textContent = p.lessonsCompleted || 0;
+    document.getElementById('stat-hours').textContent = p.hoursLogged || 0;
+    const avg = getAvgScore();
+    document.getElementById('stat-score').textContent = avg ? avg + '%' : '—';
+    document.getElementById('stat-week').textContent = 'Wk ' + (p.currentWeek || 1);
+
+    // Current lesson data
+    const lessons = [
+      { week:1, day:1, title:'Introduction to Texas Law Enforcement', cat:'Orientation', desc:'Overview of the TX law enforcement profession, TCOLE requirements, the role of peace officers, and the Texas Penal Code framework.', pct:15 },
+      { week:1, day:2, title:'Texas Penal Code — Fundamentals', cat:'Criminal Law', desc:'Chapter 1 definitions, classification of offenses, mental states (culpability), and criminal responsibility.', pct:0 },
+      { week:1, day:3, title:'Authority to Arrest', cat:'Legal Powers', desc:'CCP Art. 14.01–14.06 — When officers may arrest without a warrant, circumstances, and lawful authority.', pct:0 },
+    ];
+    const cw = p.currentWeek || 1;
+    const cd = p.currentDay || 1;
+    const lesson = lessons.find(l => l.week===cw && l.day===cd) || lessons[0];
+    document.getElementById('lesson-title').textContent = lesson.title;
+    document.getElementById('lesson-cat').textContent = lesson.cat;
+    document.getElementById('lesson-day').textContent = `Day ${lesson.day}`;
+    document.getElementById('lesson-week-badge').textContent = `Week ${lesson.week}`;
+    document.getElementById('lesson-desc').textContent = lesson.desc;
+    document.getElementById('lesson-pct').textContent = lesson.pct + '% Complete';
+    document.getElementById('lesson-bar').style.width = lesson.pct + '%';
+
+    // Module progress
+    const totalLessons = 130;
+    const pct = Math.min(100, Math.round((p.lessonsCompleted||0)/totalLessons*100));
+    document.getElementById('prog-academy').textContent = pct + '%';
+    document.getElementById('bar-academy').style.width = pct + '%';
+    const qs = p.quizScores || [];
+    document.getElementById('prog-quiz').textContent = qs.length + ' taken';
+    document.getElementById('bar-quiz').style.width = Math.min(100, qs.length * 5) + '%';
+
+    // Recent scores
+    if (qs.length > 0) {
+      const recent = qs.slice(-5).reverse();
+      document.getElementById('recent-scores').innerHTML = recent.map(s => `
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--border);font-size:.85rem">
+          <span style="color:var(--text-secondary)">${s.category}</span>
+          <span class="${s.pct>=70?'text-green':'text-red'}" style="font-weight:700">${s.pct}%</span>
+        </div>`).join('');
+    }
+  }
+</script>
+</body>
+</html>

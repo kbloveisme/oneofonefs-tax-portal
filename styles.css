@@ -621,3 +621,219 @@ textarea.form-control{resize:vertical;min-height:100px}
   .grid-2,.grid-3,.grid-4{grid-template-columns:1fr}
   .dispatch-bar{flex-wrap:wrap}
 }
+
+/* ───────────────────────────────────────────────
+   MOBILE ENHANCEMENTS — PWA / iOS / Android
+─────────────────────────────────────────────── */
+
+/* Use dynamic viewport height to avoid browser chrome overlap on mobile */
+body{min-height:100dvh}
+.app-shell{min-height:100dvh}
+.sidebar{height:100dvh}
+
+/* Safe area insets for iOS notch / home indicator */
+.login-page{
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.sidebar{
+  padding-top:env(safe-area-inset-top);
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.topbar{
+  padding-top:max(.85rem, env(safe-area-inset-top));
+  padding-left:max(2rem, env(safe-area-inset-left));
+  padding-right:max(2rem, env(safe-area-inset-right));
+}
+.toast-container{
+  bottom:max(1.5rem, env(safe-area-inset-bottom));
+  right:max(1.5rem, env(safe-area-inset-right));
+}
+.sidebar-toggle{
+  bottom:max(1.5rem, env(safe-area-inset-bottom));
+  left:max(1.5rem, env(safe-area-inset-left));
+}
+
+/* Touch-friendly minimum tap target (44×44 px per Apple HIG / WCAG) */
+.btn,
+.nav-item,
+.tab-btn,
+.login-tab-btn,
+.accordion-header,
+.quiz-choice,
+.choice-btn,
+.county-item,
+.module-tile,
+.toc-item,
+.lex-alpha-btn{
+  min-height:44px;
+}
+.form-control{
+  min-height:44px;
+  font-size:16px; /* prevents iOS auto-zoom on focus */
+}
+select.form-control{font-size:16px}
+textarea.form-control{font-size:16px}
+
+/* Sidebar overlay on mobile (swipe-to-dismiss backdrop) */
+.sidebar-overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.55);
+  z-index:199;
+  backdrop-filter:blur(2px);
+  -webkit-backdrop-filter:blur(2px);
+}
+.sidebar-overlay.active{display:block}
+
+/* Smooth sidebar animation */
+.sidebar{transition:transform .3s cubic-bezier(.4,0,.2,1),box-shadow .3s ease}
+.sidebar.open{box-shadow:8px 0 32px rgba(0,0,0,.6)}
+
+/* Pull-to-refresh indicator */
+.ptr-indicator{
+  position:fixed;
+  top:0;
+  left:50%;
+  transform:translateX(-50%) translateY(-60px);
+  background:var(--bg-elevated);
+  border:1px solid var(--border-light);
+  border-radius:999px;
+  padding:.4rem 1rem;
+  font-size:.8rem;
+  color:var(--text-secondary);
+  display:flex;
+  align-items:center;
+  gap:.5rem;
+  z-index:500;
+  transition:transform .25s ease,opacity .25s ease;
+  box-shadow:var(--shadow-md);
+}
+.ptr-indicator.ptr-pulling{transform:translateX(-50%) translateY(max(8px, env(safe-area-inset-top)));opacity:1}
+.ptr-indicator.ptr-refreshing{transform:translateX(-50%) translateY(max(8px, env(safe-area-inset-top)));opacity:1}
+.ptr-spinner{width:16px;height:16px;border:2px solid var(--border-light);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
+
+/* Offline banner */
+.offline-banner{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  background:var(--amber);
+  color:#000;
+  text-align:center;
+  padding:.5rem 1rem;
+  font-size:.85rem;
+  font-weight:600;
+  z-index:600;
+  transform:translateY(-100%);
+  transition:transform .3s ease;
+}
+.offline-banner.visible{transform:translateY(0)}
+
+/* Install prompt banner */
+.pwa-install-banner{
+  position:fixed;
+  bottom:max(5rem, calc(env(safe-area-inset-bottom) + 4.5rem));
+  left:1rem;
+  right:1rem;
+  background:var(--bg-elevated);
+  border:1px solid var(--gold-dark);
+  border-radius:var(--radius-lg);
+  padding:1rem 1.25rem;
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  z-index:400;
+  box-shadow:var(--shadow-gold);
+  animation:slideUp .4s ease;
+}
+.pwa-install-banner.hidden{display:none}
+.pwa-install-icon{font-size:2rem;flex-shrink:0}
+.pwa-install-text{flex:1}
+.pwa-install-text strong{display:block;font-size:.9rem;color:var(--text-primary);margin-bottom:.2rem}
+.pwa-install-text span{font-size:.8rem;color:var(--text-muted)}
+.pwa-install-actions{display:flex;gap:.5rem;flex-shrink:0}
+
+/* Mobile-specific responsive tweaks */
+@media(max-width:768px){
+  /* Topbar safe-area on mobile */
+  .topbar{
+    padding-top:max(.75rem, env(safe-area-inset-top));
+    padding-left:max(1rem, env(safe-area-inset-left));
+    padding-right:max(1rem, env(safe-area-inset-right));
+  }
+  /* Page content bottom padding for home bar */
+  .page-content{
+    padding-bottom:max(1rem, env(safe-area-inset-bottom));
+  }
+  /* Login portrait mode */
+  .login-page{
+    flex-direction:column;
+    min-height:100dvh;
+  }
+  .login-bg{
+    min-height:200px;
+    padding-top:env(safe-area-inset-top);
+  }
+  .login-panel{
+    width:100%;
+    padding:2rem max(1.5rem, env(safe-area-inset-right)) max(2rem, env(safe-area-inset-bottom)) max(1.5rem, env(safe-area-inset-left));
+  }
+  /* Scenario viewer full height on mobile */
+  .scenario-viewer{height:calc(100dvh - 160px)}
+  /* Jurisdiction layout stacked */
+  .jurisdiction-layout{height:auto}
+  /* Stats grid 2-column on mobile */
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  /* Toast stays above bottom nav */
+  .toast-container{bottom:max(5.5rem, calc(env(safe-area-inset-bottom) + 4.5rem))}
+}
+
+@media(max-width:480px){
+  .login-bg-title{font-size:1.6rem}
+  .welcome-text h2{font-size:1.2rem}
+  /* Lesson actions wrap nicely */
+  .lesson-actions{flex-direction:column}
+  .lesson-actions .btn{width:100%;justify-content:center}
+  /* Quiz choices full width */
+  .quiz-choice{padding:.85rem 1rem}
+  /* Choice buttons full width in scenarios */
+  .choice-btn{font-size:.85rem}
+  /* Reduce heading sizes */
+  h1{font-size:1.6rem}
+  h2{font-size:1.25rem}
+  h3{font-size:1.1rem}
+}
+
+/* Landscape mobile */
+@media(max-height:500px) and (orientation:landscape){
+  .login-bg{min-height:120px;flex:0 0 120px}
+  .login-bg-text .seal-badge{display:none}
+  .login-taglines{display:none}
+  .login-page{flex-direction:row}
+  .login-panel{overflow-y:auto;max-height:100dvh}
+  .topbar{padding-top:max(.5rem, env(safe-area-inset-top))}
+}
+
+/* iOS-specific: disable touch callout on non-interactive elements */
+.sidebar,.topbar,.page-content,.stat-card,.module-tile{
+  -webkit-touch-callout:none;
+}
+/* Allow text selection in content areas */
+.lesson-content,.study-content,.law-ref-text,.quiz-q-text{
+  -webkit-user-select:text;
+  user-select:text;
+}
+/* Smooth scrolling in scrollable containers */
+.sidebar,.county-list,.study-toc,.county-info-panel{
+  -webkit-overflow-scrolling:touch;
+  overscroll-behavior:contain;
+}
+/* Remove tap highlight on interactive elements */
+.btn,.nav-item,.module-tile,.quiz-choice,.choice-btn,.county-item{
+  -webkit-tap-highlight-color:transparent;
+  tap-highlight-color:transparent;
+}
+

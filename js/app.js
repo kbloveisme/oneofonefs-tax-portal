@@ -49,6 +49,17 @@ function buildNav(activePage) {
         <span class="nav-icon">🚪</span> Sign Out
       </a>
     </div>`;
+
+  // Inject sidebar overlay for mobile swipe-to-dismiss
+  if (!document.querySelector('.sidebar-overlay')) {
+    const overlay = document.createElement('div');
+    overlay.className = 'sidebar-overlay';
+    overlay.addEventListener('click', closeSidebar);
+    document.body.appendChild(overlay);
+  }
+
+  // Init swipe-to-close on sidebar
+  initSidebarSwipe(sidebarEl);
 }
 
 function buildTopbar(title, breadcrumbs = []) {
@@ -62,7 +73,7 @@ function buildTopbar(title, breadcrumbs = []) {
     : '';
   tb.innerHTML = `
     <div class="topbar-left">
-      <button class="sidebar-toggle" onclick="toggleSidebar()" style="position:static;width:36px;height:36px;font-size:1rem">☰</button>
+      <button class="sidebar-toggle" onclick="toggleSidebar()" style="position:static;width:44px;height:44px;font-size:1rem">☰</button>
       <div>
         <div class="topbar-title">${title}</div>
         ${crumbHtml}
@@ -77,9 +88,27 @@ function buildTopbar(title, breadcrumbs = []) {
   },1000);
 }
 
+function openSidebar() {
+  const s = document.getElementById('sidebar');
+  const o = document.querySelector('.sidebar-overlay');
+  if (s) s.classList.add('open');
+  if (o) o.classList.add('active');
+}
+
+function closeSidebar() {
+  const s = document.getElementById('sidebar');
+  const o = document.querySelector('.sidebar-overlay');
+  if (s) s.classList.remove('open');
+  if (o) o.classList.remove('active');
+}
+
 function toggleSidebar() {
   const s = document.getElementById('sidebar');
-  if (s) s.classList.toggle('open');
+  if (s && s.classList.contains('open')) {
+    closeSidebar();
+  } else {
+    openSidebar();
+  }
 }
 
 // Close sidebar on outside click (mobile)
@@ -87,9 +116,232 @@ document.addEventListener('click', e => {
   const s = document.getElementById('sidebar');
   if (s && s.classList.contains('open') && !s.contains(e.target)) {
     const tog = document.querySelector('.sidebar-toggle');
-    if (!tog || !tog.contains(e.target)) s.classList.remove('open');
+    if (!tog || !tog.contains(e.target)) closeSidebar();
   }
 });
+
+// ── Swipe-to-close sidebar ────────────────────────────────────
+function initSidebarSwipe(sidebar) {
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
+
+  sidebar.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    startY = e.touches[0].clientY;
+    tracking = true;
+  }, { passive: true });
+
+  sidebar.addEventListener('touchmove', e => {
+    if (!tracking) return;
+    const dx = e.touches[0].clientX - startX;
+    const dy = e.touches[0].clientY - startY;
+    // Only swipe-left gesture (dx < 0) and more horizontal than vertical
+    if (dx < -10 && Math.abs(dx) > Math.abs(dy)) {
+      const offset = Math.max(0, -dx);
+      sidebar.style.transform = `translateX(-${offset}px)`;
+    }
+  }, { passive: true });
+
+  sidebar.addEventListener('touchend', e => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    sidebar.style.transform = '';
+    // If swiped more than 60px left, close
+    if (dx < -60) {
+      closeSidebar();
+      triggerHaptic('light');
+    }
+  }, { passive: true });
+}
+
+// ── Edge swipe-right to open sidebar ─────────────────────────
+(function initEdgeSwipe() {
+  let startX = 0;
+  let tracking = false;
+
+  document.addEventListener('touchstart', e => {
+    startX = e.touches[0].clientX;
+    // Only track touches starting within 20px of left edge
+    tracking = startX < 20;
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (!tracking) return;
+    tracking = false;
+    const dx = e.changedTouches[0].clientX - startX;
+    if (dx > 60) {
+      const s = document.getElementById('sidebar');
+      if (s && !s.classList.contains('open')) {
+        openSidebar();
+        triggerHaptic('light');
+      }
+    }
+  }, { passive: true });
+})();
+
+// ── Pull-to-refresh ───────────────────────────────────────────
+(function initPullToRefresh() {
+  const THRESHOLD = 80;
+  let startY = 0;
+  let pulling = false;
+  let indicator = null;
+
+  function getIndicator() {
+    if (!indicator) {
+      indicator = document.createElement('div');
+      indicator.className = 'ptr-indicator';
+      indicator.innerHTML = '<div class="ptr-spinner"></div><span>Pull to refresh</span>';
+      document.body.appendChild(indicator);
+    }
+    return indicator;
+  }
+
+  document.addEventListener('touchstart', e => {
+    // Only trigger at top of page
+    if (window.scrollY === 0) {
+      startY = e.touches[0].clientY;
+      pulling = true;
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchmove', e => {
+    if (!pulling) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy > 10) {
+      const ind = getIndicator();
+      ind.classList.add('ptr-pulling');
+      ind.querySelector('span').textContent = dy > THRESHOLD ? 'Release to refresh' : 'Pull to refresh';
+    }
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    if (!pulling) return;
+    pulling = false;
+    const dy = e.changedTouches[0].clientY - startY;
+    const ind = indicator;
+    if (!ind) return;
+
+    if (dy > THRESHOLD) {
+      ind.classList.add('ptr-refreshing');
+      ind.querySelector('span').textContent = 'Refreshing…';
+      triggerHaptic('medium');
+      setTimeout(() => {
+        location.reload();
+      }, 600);
+    } else {
+      ind.classList.remove('ptr-pulling');
+    }
+  }, { passive: true });
+})();
+
+// ── Haptic feedback (Capacitor + native vibration fallback) ───
+function triggerHaptic(style) {
+  // Capacitor Haptics (available when running as native app)
+  if (window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins.Haptics) {
+    const styleMap = { light: 'LIGHT', medium: 'MEDIUM', heavy: 'HEAVY' };
+    window.Capacitor.Plugins.Haptics.impact({ style: styleMap[style] || 'LIGHT' }).catch(() => {});
+    return;
+  }
+  // Web Vibration API fallback
+  if (navigator.vibrate) {
+    const durations = { light: 10, medium: 20, heavy: 40 };
+    navigator.vibrate(durations[style] || 10);
+  }
+}
+
+// ── Offline detection ─────────────────────────────────────────
+(function initOfflineDetection() {
+  function createBanner() {
+    let banner = document.querySelector('.offline-banner');
+    if (!banner) {
+      banner = document.createElement('div');
+      banner.className = 'offline-banner';
+      banner.textContent = '⚠️  You are offline — content loaded from cache';
+      document.body.appendChild(banner);
+    }
+    return banner;
+  }
+
+  function handleOnline() {
+    const banner = document.querySelector('.offline-banner');
+    if (banner) banner.classList.remove('visible');
+  }
+
+  function handleOffline() {
+    createBanner().classList.add('visible');
+    showToast('You are offline. Cached content is available.', 'warning', 5000);
+  }
+
+  window.addEventListener('online', handleOnline);
+  window.addEventListener('offline', handleOffline);
+
+  // Check on load
+  if (!navigator.onLine) handleOffline();
+})();
+
+// ── PWA Install Prompt ────────────────────────────────────────
+(function initInstallPrompt() {
+  let deferredPrompt = null;
+
+  window.addEventListener('beforeinstallprompt', e => {
+    e.preventDefault();
+    deferredPrompt = e;
+
+    // Don't show if already installed or dismissed
+    if (localStorage.getItem('tlea_pwa_dismissed')) return;
+
+    const banner = document.createElement('div');
+    banner.className = 'pwa-install-banner';
+    banner.innerHTML = `
+      <span class="pwa-install-icon">⚖️</span>
+      <div class="pwa-install-text">
+        <strong>Install TLEA Portal</strong>
+        <span>Add to your home screen for offline access</span>
+      </div>
+      <div class="pwa-install-actions">
+        <button class="btn btn-sm btn-outline" id="pwa-dismiss">Later</button>
+        <button class="btn btn-sm btn-gold" id="pwa-install">Install</button>
+      </div>`;
+    document.body.appendChild(banner);
+
+    document.getElementById('pwa-install').addEventListener('click', async () => {
+      banner.classList.add('hidden');
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        triggerHaptic('medium');
+        showToast('TLEA Portal installed! 🎉', 'success');
+      }
+      deferredPrompt = null;
+    });
+
+    document.getElementById('pwa-dismiss').addEventListener('click', () => {
+      banner.classList.add('hidden');
+      localStorage.setItem('tlea_pwa_dismissed', '1');
+    });
+  });
+
+  window.addEventListener('appinstalled', () => {
+    showToast('TLEA Portal successfully installed!', 'success');
+  });
+})();
+
+// ── iOS keyboard / viewport resize fix ───────────────────────
+(function initIOSKeyboardFix() {
+  // iOS shrinks the viewport when the keyboard appears.
+  // Lock the visual viewport height to avoid layout jumps.
+  if (!window.visualViewport) return;
+
+  const setViewportHeight = () => {
+    const vh = window.visualViewport.height * 0.01;
+    document.documentElement.style.setProperty('--real-vh', `${vh}px`);
+  };
+
+  window.visualViewport.addEventListener('resize', setViewportHeight);
+  setViewportHeight();
+})();
 
 function showToast(msg, type='info', duration=3500) {
   let tc = document.querySelector('.toast-container');
@@ -179,3 +431,4 @@ document.addEventListener('click', e => {
   const container = tabs.closest('[data-tabs-container]') || document;
   container.querySelectorAll('.tab-panel').forEach((p,i)=>p.classList.toggle('active',i===idx));
 });
+

@@ -1,0 +1,50 @@
+{
+  "name": "tlea-training-portal",
+  "version": "1.0.0",
+  "description": "Texas Law Enforcement Academy — Cadet Training & Certification Portal (iOS/Android)",
+  "private": true,
+  "scripts": {
+    "dev": "npx serve .",
+    "build": "echo 'Static site — no build step required'",
+    "cap:add:ios": "npx cap add ios",
+    "cap:add:android": "npx cap add android",
+    "cap:sync": "npx cap sync",
+    "cap:open:ios": "npx cap open ios",
+    "cap:open:android": "npx cap open android",
+    "cap:run:ios": "npx cap run ios",
+    "cap:run:android": "npx cap run android",
+    "cap:update": "npx cap update"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/app": "^6.0.0",
+    "@capacitor/browser": "^6.0.0",
+    "@capacitor/camera": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/geolocation": "^6.0.0",
+    "@capacitor/haptics": "^6.0.0",
+    "@capacitor/ios": "^6.0.0",
+    "@capacitor/keyboard": "^6.0.0",
+    "@capacitor/local-notifications": "^6.0.0",
+    "@capacitor/network": "^6.0.0",
+    "@capacitor/push-notifications": "^6.0.0",
+    "@capacitor/splash-screen": "^6.0.0",
+    "@capacitor/status-bar": "^6.0.0",
+    "@capacitor/storage": "^1.2.5"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0",
+    "serve": "^14.0.0"
+  },
+  "keywords": [
+    "tlea",
+    "law-enforcement",
+    "training",
+    "pwa",
+    "capacitor",
+    "ios",
+    "android"
+  ],
+  "author": "Texas Law Enforcement Academy",
+  "license": "UNLICENSED"
+}

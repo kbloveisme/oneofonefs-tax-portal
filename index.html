@@ -2,9 +2,44 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Texas Law Enforcement Academy — Cadet Training Portal</title>
+
+  <!-- PWA / Mobile Meta Tags -->
+  <meta name="theme-color" content="#c9a84b">
+  <meta name="description" content="Texas Law Enforcement Academy — Cadet Training & Certification Portal">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="TLEA Portal">
+  <meta name="application-name" content="TLEA Portal">
+  <meta name="msapplication-TileColor" content="#0d1117">
+  <meta name="msapplication-TileImage" content="icons/icon-144.png">
+  <meta name="format-detection" content="telephone=no">
+
+  <!-- PWA Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Icons -->
+  <link rel="icon" type="image/png" sizes="96x96" href="icons/icon-96.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icons/icon-152.png">
+  <link rel="apple-touch-icon" sizes="192x192" href="icons/icon-192.png">
+
+  <!-- iOS Splash Screens -->
+  <link rel="apple-touch-startup-image" href="icons/splash-iphone.png" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3)">
+  <link rel="apple-touch-startup-image" href="icons/splash-ipad.png" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2)">
+
   <link rel="stylesheet" href="styles.css">
+
+  <!-- Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(() => {});
+      });
+    }
+  </script>
 </head>
 <body class="login-page">
 
@@ -102,20 +137,20 @@
         <div class="grid-2">
           <div class="form-group">
             <label class="form-label">First Name</label>
-            <input id="reg-first" type="text" class="form-control" placeholder="First name" required>
+            <input id="reg-first" type="text" class="form-control" placeholder="First name" required autocomplete="given-name">
           </div>
           <div class="form-group">
             <label class="form-label">Last Name</label>
-            <input id="reg-last" type="text" class="form-control" placeholder="Last name" required>
+            <input id="reg-last" type="text" class="form-control" placeholder="Last name" required autocomplete="family-name">
           </div>
         </div>
         <div class="form-group">
           <label class="form-label">Username</label>
-          <input id="reg-user" type="text" class="form-control" placeholder="Choose a username" required>
+          <input id="reg-user" type="text" class="form-control" placeholder="Choose a username" required autocomplete="username">
         </div>
         <div class="form-group">
           <label class="form-label">Password</label>
-          <input id="reg-pass" type="password" class="form-control" placeholder="Min 8 characters" required minlength="8">
+          <input id="reg-pass" type="password" class="form-control" placeholder="Min 8 characters" required minlength="8" autocomplete="new-password">
         </div>
         <div class="form-group">
           <label class="form-label">Role</label>

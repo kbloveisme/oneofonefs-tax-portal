@@ -2,13 +2,13 @@
   "name": "TLEA Training Portal",
   "short_name": "TLEA Portal",
   "description": "Texas Law Enforcement Academy — Cadet Training & Certification Portal",
-  "start_url": "/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "orientation": "any",
   "background_color": "#0d1117",
   "theme_color": "#c9a84b",
   "lang": "en-US",
-  "scope": "/",
+  "scope": "./",
   "categories": ["education", "productivity"],
   "icons": [
     {
@@ -81,21 +81,21 @@
       "name": "Dashboard",
       "short_name": "Dashboard",
       "description": "Go to your training dashboard",
-      "url": "/dashboard.html",
+      "url": "./dashboard.html",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Exams & Quizzes",
       "short_name": "Quizzes",
       "description": "Take a quiz",
-      "url": "/quiz.html",
+      "url": "./quiz.html",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
     },
     {
       "name": "Dispatch Scenarios",
       "short_name": "Scenarios",
       "description": "Run a dispatch scenario",
-      "url": "/scenarios.html",
+      "url": "./scenarios.html",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96" }]
     }
   ]

@@ -7,23 +7,22 @@ const DYNAMIC_CACHE = `${CACHE_VERSION}-dynamic`;
 
 // Core app shell files to pre-cache on install
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/dashboard.html',
-  '/academy.html',
-  '/jurisdiction.html',
-  '/quiz.html',
-  '/scenarios.html',
-  '/study-guide.html',
-  '/tcole.html',
-  '/styles.css',
-  '/js/app.js',
-  '/js/auth.js',
-  '/js/data.js',
-  '/js/quiz-data.js',
-  '/js/scenario-data.js',
-  '/js/tcole-data.js',
-  '/manifest.json',
+  'index.html',
+  'dashboard.html',
+  'academy.html',
+  'jurisdiction.html',
+  'quiz.html',
+  'scenarios.html',
+  'study-guide.html',
+  'tcole.html',
+  'styles.css',
+  'js/app.js',
+  'js/auth.js',
+  'js/data.js',
+  'js/quiz-data.js',
+  'js/scenario-data.js',
+  'js/tcole-data.js',
+  'manifest.json',
 ];
 
 // ── Install: pre-cache app shell ──────────────────────────────
@@ -63,13 +62,17 @@ self.addEventListener('fetch', event => {
     caches.match(request).then(cached => {
       if (cached) {
         // Return cached, then refresh in background (stale-while-revalidate)
-        const networkFetch = fetch(request).then(response => {
-          if (response && response.status === 200) {
-            const clone = response.clone();
-            caches.open(DYNAMIC_CACHE).then(cache => cache.put(request, clone));
-          }
-          return response;
-        }).catch(() => null);
+        const networkFetch = caches.open(STATIC_CACHE).then(staticCache =>
+          staticCache.match(request).then(staticHit => (staticHit ? STATIC_CACHE : DYNAMIC_CACHE))
+        ).then(cacheName =>
+          fetch(request).then(response => {
+            if (response && response.status === 200) {
+              const clone = response.clone();
+              caches.open(cacheName).then(cache => cache.put(request, clone));
+            }
+            return response;
+          })
+        ).catch(() => null);
 
         // Return cached immediately, background-update
         event.waitUntil(networkFetch);
@@ -87,7 +90,7 @@ self.addEventListener('fetch', event => {
       }).catch(() => {
         // Offline fallback: return index.html for navigation requests
         if (request.mode === 'navigate') {
-          return caches.match('/index.html');
+          return caches.match('index.html');
         }
         return new Response('Offline — resource not available', {
           status: 503,
@@ -118,8 +121,8 @@ self.addEventListener('push', event => {
   const title = data.title || 'TLEA Training Portal';
   const options = {
     body: data.body || 'You have a new training notification.',
-    icon: '/icons/icon-192.png',
-    badge: '/icons/icon-96.png',
+    icon: 'icons/icon-192.png',
+    badge: 'icons/icon-96.png',
     vibrate: [200, 100, 200],
     data: { url: data.url || '/' },
     actions: [
